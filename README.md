@@ -1,5 +1,9 @@
 # Lost Cathedral
 
+![Lost Cathedral: the nave of the cathedral, god rays through torn banners, Armored Death with his scythe facing Thorn Exile on the chequered floor](media/lost-cathedral.jpg)
+
+Play it on Genex: https://genex.games/world/lost-cathedral
+
 (Working title through development: Vesper — The Last Rite. Renamed 17 Sep 2026 for the Genex release; the hosted slug is `lost-cathedral`.)
 
 A playable local third-person gothic boss encounter: the approved **Thorn Exile** versus **Armored Death**, with the approved scythe gripped in both hands. Built with Three.js and Vite; generated assets are local files.
