@@ -2,7 +2,7 @@
 // the blade-spine fire, and the numbers the user asked to nudge.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync,readdirSync} from 'node:fs';
+import {readFileSync,readdirSync,existsSync} from 'node:fs';
 import * as T from 'three';
 import {bladeSpine,createWeaponFire,SPINE_STATIONS} from '../src/game/weapon-fire.js';
 
@@ -42,6 +42,14 @@ test('the shock ring is a square, not pow(), and the sample coordinate is fenced
 test('bloom and the fill are up the little the user asked for',()=>{
  assert.ok(source('rendering.js').includes('new CathedralBloom(.68,.82,.56)'),'bloom .68 strength, .56 threshold');
  assert.ok(source('arena.js').includes('new T.HemisphereLight(0x53707f,0x080604,.24)'),'hemisphere fill .24');
+});
+
+test('the fighting floor carries the generated seal decal instead of the iron hoops',()=>{
+ const arena=source('arena.js');
+ assert.ok(!arena.includes("for(const radius of [4.8,4.95,5.15])"),'the three torus hoops are gone');
+ assert.ok(arena.includes("seal.name='floor seal'")&&arena.includes('sealHeat(value)'),'one decal mesh with a heat hook');
+ for(const file of ['floor-seal.png','floor-seal-nr.png'])assert.ok(existsSync(new URL('../assets/environment/'+file,import.meta.url)),file+' exists');
+ assert.ok(source('main.js').includes("arena?.sealHeat?.(1)"),'the phase change heats the seal');
 });
 
 /** A blade mesh whose centre bows away from the chord: z = bow * t^2 along y from 0.28 to 1.27 (the exile's sword

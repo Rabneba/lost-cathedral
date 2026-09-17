@@ -173,7 +173,7 @@ export async function buildArena(scene,texturePaths={}){
  // Real leaded glass instead of a flat emissive slab. alphaTest keeps the
  // broken panes as actual holes and keeps the panes out of the transparent
  // sort, so they still occlude and still light the floor beneath them.
- const [lancetTexture,cookie,oakTexture,stainTexture,metalTexture,debrisTexture,damageTexture]=await Promise.all([
+ const [lancetTexture,cookie,oakTexture,stainTexture,metalTexture,debrisTexture,damageTexture,sealTexture,sealNormal]=await Promise.all([
   loader.loadAsync(ASSETS.lancetGlass).catch(()=>null),
   loader.loadAsync(ASSETS.windowCookie).catch(()=>null),
   loader.loadAsync(ASSETS.cathedralOak).catch(()=>null),
@@ -181,7 +181,11 @@ export async function buildArena(scene,texturePaths={}){
   loader.loadAsync(ASSETS.cathedralMetal).catch(()=>null),
   loader.loadAsync(ASSETS.debrisAtlas).catch(()=>null),
   loader.loadAsync(ASSETS.floorDamageAtlas).catch(()=>null),
+  loader.loadAsync(ASSETS.floorSeal).catch(()=>null),
+  loader.loadAsync(ASSETS.floorSealNR).catch(()=>null),
  ]);
+ if(sealTexture){sealTexture.colorSpace=T.SRGBColorSpace;sealTexture.anisotropy=8;}
+ if(sealNormal){sealNormal.anisotropy=4;}
  if(debrisTexture){debrisTexture.colorSpace=T.SRGBColorSpace;debrisTexture.anisotropy=8;}
  if(damageTexture){damageTexture.colorSpace=T.SRGBColorSpace;damageTexture.anisotropy=8;}
  // T4, the tarnished brass and wrought iron tiling map, was generated last
@@ -467,10 +471,19 @@ export async function buildArena(scene,texturePaths={}){
  for(const dz of [-.5,.5])cyl(x-s*.2,1.1,z+dz,.045,1.5,brass,6);
  box(x-s*.32,1.25,z,.04,.85,.48,dark);
  }
- // An eroded iron funerary seal inlaid into the open fighting floor.
- const inlay=new T.MeshStandardMaterial({color:0x55534a,roughness:.86,metalness:.38});
- for(const radius of [4.8,4.95,5.15])put(new T.TorusGeometry(radius,.022,5,120),inlay,[0,.027,-3],[Math.PI/2,0,0]);
- for(let i=0;i<24;i++){const a=i*Math.PI/12;const pts=[v(Math.sin(a)*4.82,.026,-3+Math.cos(a)*4.82),v(Math.sin(a+.075)*4.35,.026,-3+Math.cos(a+.075)*4.35),v(Math.sin(a+.13)*4.82,.026,-3+Math.cos(a+.13)*4.82)];tube(pts,.018,inlay);}
+ // The funerary seal inlaid into the open fighting floor. Round 4 (17 Sep, afternoon): the three iron hoops and 24
+ // zigzag tubes read as "random stripes" (the user); replaced by a generated inlay (assets/environment/floor-seal.png:
+ // brass and iron tracery, alpha between the metal) laid flat as one decal 10.6 m across at the same centre, with a
+ // normal map derived from it for the relief and an ember emissive the fight breathes into (sealHeat: a faint
+ // smoulder in the grooves through phase one, a slow pulse once the last vow is broken). Under the Reflector, so
+ // the wet floor mirrors it like everything else on the flagstones.
+ let seal=null;
+ if(sealTexture){
+  const sealGeometry=new T.CircleGeometry(5.3,96);sealGeometry.rotateX(-Math.PI/2);
+  const sealMat=new T.MeshStandardMaterial({map:sealTexture,normalMap:sealNormal||null,normalScale:new T.Vector2(.9,.9),alphaTest:.4,roughness:.58,metalness:.6,color:0xb8a98c,emissive:new T.Color(0xff5a1e),emissiveMap:sealTexture,emissiveIntensity:0,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2});
+  seal=new T.Mesh(sealGeometry,sealMat);seal.position.set(0,.012,-3);seal.name='floor seal';seal.castShadow=false;seal.receiveShadow=true;seal.renderOrder=0;root.add(seal);
+ }
+ let sealHeatTarget=.12,sealHeatNow=0;
  for(const sx of [-1,1])for(const xx of [4.7,7,9.3,11.6]){arch(sx*xx,-19.4,1.65,4.2,2.8,0,.09);cyl(sx*(xx-.9),2.3,-19.4,.09,4.6,carved,8);cyl(sx*(xx+.9),2.3,-19.4,.09,4.6,carved,8);}
  // The west end had nothing at all on the two big flanking walls, so the whole
  // return view was a grey field with a door in it. Same blind register as the
@@ -1109,7 +1122,11 @@ export async function buildArena(scene,texturePaths={}){
  // draw from the debris sprite sheet. Placed LAST so the rand() draws leave
  // every earlier procedural placement bit-for-bit where it was.
  const debris=debrisScatter(debrisTexture,rand);if(debris)root.add(debris);
- return{setFloorStyle,root,lights,cameraColliders,groundColliders:[...candleGroundColliders(),...propColliders],update(time,camera){doorFogMat.uniforms.time.value=time;updateFlames(time);beamMat.uniforms.time.value=time;skyMat.uniforms.time.value=time;banners?.update(time);
+ return{setFloorStyle,root,lights,cameraColliders,groundColliders:[...candleGroundColliders(),...propColliders],
+  /** 0..1: how much the seal's inlay smoulders (main.js: .12 at the start of a fight, 1 from the phase change). */
+  sealHeat(value){sealHeatTarget=Math.max(0,Math.min(1,Number.isFinite(value)?value:0));},
+  update(time,camera){
+   if(seal){sealHeatNow+=(sealHeatTarget-sealHeatNow)*.03;seal.material.emissiveIntensity=sealHeatNow*(.30+.18*Math.sin(time*1.1)+.06*Math.sin(time*3.7));}doorFogMat.uniforms.time.value=time;updateFlames(time);beamMat.uniforms.time.value=time;skyMat.uniforms.time.value=time;banners?.update(time);
   // Cloud crossing the moon: the rose projection breathes instead of sitting flat.
   rose.intensity=roseBase*(.72+.28*(.5+.5*Math.sin(time*.31)+.18*Math.sin(time*.77)));
   camera.getWorldDirection(fillForward);

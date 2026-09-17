@@ -65,6 +65,10 @@ export const ASSETS={
  // Round 3 (16 Sep evening, graphics pass): a 2x2 atlas of floor damage decals (shattered slab, crack, crater,
  // rubble scatter), de-fringed copy of the generated sheet, laid over the fighting floor by arena.js.
  floorDamageAtlas:new URL('../../assets/environment/floor-damage-atlas.png',import.meta.url).href,
+ // Round 4 (17 Sep, afternoon): the funerary seal inlaid in the fighting floor, a generated top-down inlay with alpha
+ // between the metal (prepared by scripts/prepare-floor-seal.py) and a normal map derived from it.
+ floorSeal:new URL('../../assets/environment/floor-seal.png',import.meta.url).href,
+ floorSealNR:new URL('../../assets/environment/floor-seal-nr.png',import.meta.url).href,
  // The user's chosen combat sounds (round 2, stream FX): lists of takes from
  // docs/round-2-2026-09-16/sounds-chosen.json, falling back to the old pair.
  playerHitArmor:chosenSounds('playerHitArmor',[new URL('../../assets/one-powerful-heavy-steel-scythe-impact-a-cmu1fwan.mp3',import.meta.url).href]),
