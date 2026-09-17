@@ -1,0 +1,37 @@
+{
+ "chosenBy": "user, 16 Sep 2026 (chat)",
+ "format": "each key is a list; the game picks one at random per play, never the same twice in a row. The first entry is the user's pick; later entries are generated variations in the same character (round 2 batch), to be trimmed if the user rejects any.",
+ "playerHitArmor": [
+  "assets/sfx/candidates/player-hit-armor-6.mp3",
+  "assets/sfx/candidates/player-hit-armor-3.mp3",
+  "assets/sfx/candidates/player-hit-armor-5.mp3",
+  "assets/sfx/candidates/player-hit-armor-7.mp3"
+ ],
+ "bossSwing": [
+  "assets/sfx/candidates/boss-swing-9.mp3",
+  "assets/sfx/candidates/boss-swing-16.mp3",
+  "assets/sfx/candidates/boss-swing-17.mp3"
+ ],
+ "bossHitPlayer": [
+  "assets/sfx/candidates/boss-hit-player-6.mp3",
+  "assets/sfx/candidates/boss-hit-player-4.mp3",
+  "assets/sfx/candidates/boss-hit-player-5.mp3"
+ ],
+ "playerSwing": [
+  "assets/sfx/candidates/player-swing-12.mp3",
+  "assets/sfx/candidates/player-swing-18.mp3",
+  "assets/sfx/candidates/player-swing-19.mp3"
+ ],
+ "block": [
+  "assets/sfx/candidates/designed/block-designed-1.mp3",
+  "assets/sfx/candidates/designed/block-designed-3.mp3"
+ ],
+ "notes": "Final picks (user, 16 Sep, third pass): hit=6 (3,5,7 rotate), boss-swing=9, boss-hit=6 (4,5 rotate), swing=12, block=13 = designed/block-designed-1.mp3 (steel-shield impact 9 + low body from the slam). Variations of 9/12/13 are being generated for rotation and will be appended if the user keeps them. All candidate copies are peak-normalized to -1 dBFS. playerFootstep (16 Sep evening): the user asked to regenerate the player's footsteps; five new takes (trimmed, levelled to the old step's loudness) rotate until the user prunes them; the boss keeps 'footstep'.",
+ "playerFootstep": [
+  "assets/sfx/candidates/player-footstep-1.mp3",
+  "assets/sfx/candidates/player-footstep-2.mp3",
+  "assets/sfx/candidates/player-footstep-3.mp3",
+  "assets/sfx/candidates/player-footstep-4.mp3",
+  "assets/sfx/candidates/player-footstep-5.mp3"
+ ]
+}

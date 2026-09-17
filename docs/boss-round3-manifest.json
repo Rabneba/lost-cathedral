@@ -1,0 +1,227 @@
+{
+  "asset": "assets/production/boss-supported-combat.glb",
+  "characterId": "cmu1gedz204a32pnwb9ti93xn",
+  "rigProvider": "Uthana, preserved approved mesh and bind",
+  "locomotionSpeed": 0.56,
+  "idleTurnRate": 2.2,
+  "approachDistance": 2.4615384615384617,
+  "attackRange": 2.576923076923077,
+  "phaseTwoSpeedMultiplier": 1.15,
+  "phaseTwoWalkMultiplier": 1.02,
+  "phaseTwoCooldownMultiplier": 1,
+  "attackWeights": {
+    "phase1": {
+      "sweep": 3,
+      "flurry": 1.5,
+      "slam": 3,
+      "burst": 1,
+      "fissure": 2
+    },
+    "phase2": {
+      "sweep": 2.5,
+      "flurry": 3,
+      "slam": 2.5,
+      "burst": 1.5,
+      "fissure": 3
+    },
+    "closeDistance": 1.461538,
+    "closeBurstMultiplier": 2,
+    "punishedBurstMultiplier": 8,
+    "burstAction": "burst",
+    "note": "Weights per phase among the attacks whose band contains the player; the same attack never starts three times running; the eruption is favoured when the player is inside closeDistance or after three consecutive hits taken, and opens phase two. The fissure is the only attack with a band past 3.35 m, so backing off is no longer safe. Distances are authored metres."
+  },
+  "weaponSegment": [
+    [
+      0.2,
+      2.79,
+      -0.29
+    ],
+    [
+      0.825,
+      2.39,
+      -0.315
+    ]
+  ],
+  "clips": {
+    "idle": {
+      "duration": 26.2666667,
+      "rate": 1,
+      "blendIn": 0.25,
+      "source": "approved five-degree forward lean; quarter-speed pacing baked"
+    },
+    "walk-forward": {
+      "duration": 3.9333333,
+      "sourceSpeed": 0.4094329,
+      "blendIn": 0.28,
+      "source": "approved combat-advance video via Uthana mxLm1X2ijEuU; Blender posture, contact and stride cleanup",
+      "footPhaseOffsets": {
+        "Left": 0.115,
+        "Right": 0.615
+      },
+      "stanceFraction": 0.62
+    },
+    "sweep": {
+      "duration": 4.4,
+      "windup": 1.85,
+      "active": 0.3999999999999999,
+      "recovery": 2.1500000000000004,
+      "hitWindows": [
+        [
+          1.85,
+          2.25
+        ]
+      ],
+      "blendIn": 0.12,
+      "source": "Uthana mVaw5R3TuLmP captured sweep; actual curved-haft grip, preserved arm hinge, deliberate regrips and planted leading foot",
+      "engagementRange": [
+        1.0769230769230769,
+        1.884615
+      ],
+      "preferredDistance": 1.3076923076923077,
+      "speed": 1.5,
+      "cooldown": 0.8,
+      "bandSource": "scripts/measure-boss-reach.mjs, 16 Sep 2026: the blade crosses the player capsule inside [1.85, 2.25] from 1.4 m to 2.6 m; band widened from 2.15 m to 2.45 m",
+      "paceNote": "Round 3 (16 Sep evening): 1.3 -> 1.5, cooldown .55 -> .8 - faster to react to, chosen less often (weight 4 -> 3)."
+    },
+    "slam": {
+      "duration": 4.9,
+      "windup": 2.1358953231071784,
+      "active": 0.2211550146526151,
+      "recovery": 2.542949662240207,
+      "hitWindows": [
+        [
+          2.1358953231071784,
+          2.3570503377597936
+        ]
+      ],
+      "blendIn": 0.14,
+      "source": "Uthana mnJ1oEhWNc9m captured strike; bounded palm regrips, preserved arm hinge, supported boots and clear recovery backstep",
+      "engagementRange": [
+        2,
+        2.576923076923077
+      ],
+      "preferredDistance": 2.307692,
+      "speed": 1.3,
+      "recoverySpeed": 1.7,
+      "cooldown": 0.8,
+      "bandSource": "scripts/measure-boss-reach.mjs, 16 Sep 2026: contact inside [2.136, 2.357] from 2.6 m to 3.35 m; band widened from [3.1, 3.35] to [2.6, 3.35] m",
+      "paceNote": "Round 3: 1.15 -> 1.3 with the recovery 1.5 -> 1.7, cooldown .55 -> .8, weight 4 -> 3."
+    },
+    "hit": {
+      "duration": 0.6,
+      "blendIn": 0.08,
+      "source": "authored support pose on approved rig"
+    },
+    "awaken": {
+      "duration": 2.6,
+      "blendIn": 0.25,
+      "source": "authored support pose on approved rig"
+    },
+    "death": {
+      "duration": 3.6,
+      "blendIn": 0.18,
+      "source": "authored kneeling collapse on approved rig"
+    }
+  },
+  "actions": {
+    "flurry": {
+      "clip": "sweep",
+      "segments": [
+        [
+          0,
+          2.45
+        ],
+        [
+          2.45,
+          0
+        ]
+      ],
+      "duration": 4.9,
+      "windup": 1.85,
+      "active": 1.23,
+      "recovery": 1.82,
+      "hitWindows": [
+        [
+          1.85,
+          2.25
+        ],
+        [
+          2.65,
+          3.08
+        ]
+      ],
+      "damage": 20,
+      "speed": 1.65,
+      "cooldown": 0.75,
+      "blendIn": 0.12,
+      "source": "the approved sweep clip played forward to 2.45 s (the cut settles low in front) and then straight back to 0: the return pass is a backhand along the same arc, so there is no pose discontinuity; second window measured with scripts/measure-boss-reach.mjs (contact 1.4-2.45 m while the blade travels back through clip 2.37-1.82)"
+    },
+    "burst": {
+      "clip": "slam",
+      "duration": 4.9,
+      "windup": 2.36,
+      "active": 0.45,
+      "recovery": 2.09,
+      "hitWindows": [
+        [
+          2.36,
+          2.81
+        ]
+      ],
+      "damage": 30,
+      "radial": true,
+      "reach": 2.461538,
+      "speed": 1.35,
+      "cooldown": 0.75,
+      "blendIn": 0.14,
+      "engagementRange": [
+        1.076923,
+        2.307692
+      ],
+      "preferredDistance": 1.307692,
+      "source": "the approved slam clip: at 2.36 s the blade bottoms out in front and the pose holds until 3.3 s; dark fire erupts in a ring (radial distance check, no blade geometry) while the boss is planted, then the clip's own recovery backstep"
+    },
+    "fissure": {
+      "clip": "slam",
+      "duration": 4.9,
+      "windup": 2.36,
+      "active": 0.6,
+      "recovery": 1.94,
+      "hitWindows": [
+        [
+          2.36,
+          2.96
+        ]
+      ],
+      "damage": 34,
+      "linear": true,
+      "reach": 7.4,
+      "width": 1,
+      "travel": 0.6,
+      "speed": 1.35,
+      "recoverySpeed": 1.6,
+      "cooldown": 0.9,
+      "blendIn": 0.14,
+      "engagementRange": [
+        2.2,
+        6.6
+      ],
+      "preferredDistance": 3,
+      "source": "Round 3 (16 Sep 2026 evening, graphics + boss pass): the approved slam clip planted (2.36 s, the blade bottoms out in front) and a fissure of dark fire tears along the floor from the plant point along the boss's facing - reach 7.4 authored metres crossed in .6 clip seconds (`travel`), a line `width` wide; hit by line geometry (encounter.js linearContact), not by blade contact. The one attack whose band reaches past the slam's 3.35 m, so a player who backs off gets a line to sidestep instead of a boss who walks. Inspiration: the line casts of github.com/achrefelouafi/LinearAbiltyCastingThreeJS."
+    }
+  },
+  "gripCalibration": {
+    "socketAxis": "local +Z",
+    "idleAnchors": {
+      "Right": 0.6,
+      "Left": 1.55
+    },
+    "slam": "Primary hand anchored; secondary releases in preparation/recovery. See boss-v75-release-events.json. V78 changes only legs.",
+    "sweep": "Measured curved haft at dominant station1.9; netshaftroll\u2212145\u00b0 and wholebodyaim+15\u00b0 baked before foot plants. Both hands held source51\u201396.",
+    "sourceMeshesPreserved": true
+  },
+  "facingCalibrationDegrees": -50,
+  "sha256": "a2d1f13c0086bd95c3912fc480da192bd35a3630b63f61710a134736b7db0cbf",
+  "status": "Round 3 (16 September 2026, evening): faster sweep/slam/flurry/burst with longer cooldowns and lower weights, the new linear fissure, phase two x1.15. Same GLB as docs/boss-supported-manifest.json.",
+  "provenance": "docs/boss-round2-manifest.json (round 2 rules, clips, grip calibration, hashes) + docs/graphics-2026-09-16/README.md (round 3 rules revision)"
+}

@@ -1,0 +1,237 @@
+{
+  "date": "2026-09-14",
+  "stage": "autonomous-full-production",
+  "player": {
+    "key": "player-1",
+    "name": "Thorn Exile",
+    "conceptId": "cmu11v2lh03hr2pqserx5k5wv",
+    "conceptImage": "assets/use-the-supplied-screenshot-as-a-visual-cmu11v2l.png",
+    "bodyExcludes": [
+      "shield",
+      "sword",
+      "loose cloak",
+      "trailing blue and crimson fabric",
+      "flexible plume"
+    ],
+    "separateAttachments": [
+      "shield",
+      "sword",
+      "code-built cloth and plume"
+    ]
+  },
+  "boss": {
+    "key": "boss-1",
+    "name": "Reliquary Saint",
+    "conceptId": "cmu11wpht03fn2pnw3xtkt054",
+    "conceptImage": "assets/use-the-supplied-screenshot-as-a-visual-cmu11wph.png",
+    "bodyExcludes": [
+      "held blade",
+      "loose hanging cloth",
+      "background",
+      "small scale figure"
+    ],
+    "retain": [
+      "mask",
+      "golden rib relic",
+      "circular bone frame",
+      "all branching arms visible in the approved image",
+      "two legs"
+    ],
+    "status": "set aside by user; retained for reference"
+  },
+  "scope": "Preserve the approved Thorn Exile and reference-based Armored Death with the approved two-handed scythe. Autonomous Uthana + Blender essential motion, gameplay, map, effects and separate cloth work is authorized. New overnight motion results await the user\u2019s review; no public publishing is authorized.",
+  "animationApproval": false,
+  "rigFinalizationApproval": false,
+  "previewStatus": "concepts and static models approved by user",
+  "modelApproval": true,
+  "bossRigDiscussion": "Approved: custom rig in local Blender, independent arm chains and controlled rigid/deforming regions; validate rig poses before combat animation.",
+  "bossRigApproval": true,
+  "bossRigStatus": "previous complex boss rig preserved; development stopped by user direction",
+  "bossRigResultApproval": false,
+  "bossRigFile": "assets/rigs/reliquary-saint/reliquary-saint-rig.blend",
+  "rigFinalizationApprovalNote": "No blanket finalization approval. Custom boss rig implementation is specifically authorized by bossRigApproval; player rigging and combat animation remain separate stages.",
+  "bossReplacement": {
+    "conceptGenerationApproval": true,
+    "riggingTarget": "Meshy humanoid Rigging API",
+    "candidates": [
+      "ashen-confessor",
+      "bell-executioner",
+      "mourning-regent"
+    ],
+    "selectedConcept": "reaper-reference-v2",
+    "modelApproval": false,
+    "riggingApproval": true,
+    "animationApproval": true,
+    "latestDirection": "Approved reference-based hooded Armored Death with the shown scythe, used two-handed",
+    "latestConcept": "reaper-reference-v2",
+    "latestConceptImage": "assets/edit-the-attached-image-treat-this-chara-cmu1dtoz.png",
+    "latestConceptId": "cmu1dtozl041l2pnwiao6dh0f",
+    "latestReview": "assets/boss-reaper-v2-review.html",
+    "latestConceptStatus": "approved by user; production plan discussion",
+    "rejectedConcepts": [
+      {
+        "key": "hollow-reaper",
+        "reason": "Too generic and too far from the provided armor reference; user requested stronger reference fidelity."
+      },
+      {
+        "key": "grave-warden",
+        "reason": "Too literal to the reference; sword oversized, clunky and mismatched in color."
+      },
+      {
+        "key": "rustbound-penitent",
+        "reason": "Too literal to the reference; sword oversized, clunky and mismatched in color."
+      }
+    ],
+    "acceptedVisualBase": "reaper-reference-v2",
+    "latestCandidates": [
+      "vesper-knight",
+      "thorn-mourner",
+      "pale-castellan"
+    ],
+    "latestConcepts": [
+      {
+        "key": "vesper-knight",
+        "image": "assets/take-the-vibe-from-this-image-and-invent-cmu1eegu.png",
+        "generationId": "cmu1eegu104982pqszgqnxrtq"
+      },
+      {
+        "key": "thorn-mourner",
+        "image": "assets/take-the-vibe-from-this-image-and-invent-cmu1eeip.png",
+        "generationId": "cmu1eeiph042r2pnwildkz3p5"
+      },
+      {
+        "key": "pale-castellan",
+        "image": "assets/take-the-vibe-from-this-image-and-invent-cmu1eek5.png",
+        "generationId": "cmu1eek5y049b2pqsmwmejvvd"
+      }
+    ],
+    "conceptResultApproval": true,
+    "selectedConceptImage": "assets/edit-the-attached-image-treat-this-chara-cmu1dtoz.png",
+    "selectedConceptId": "cmu1dtozl041l2pnwiao6dh0f",
+    "selectedWeapon": {
+      "type": "scythe",
+      "source": "same approved concept image",
+      "approval": true,
+      "grip": "both hands during windup, strike and recovery"
+    },
+    "modelGenerationApproval": true,
+    "productionPlanApproval": true
+  },
+  "currentBossKey": "reaper-reference-v2",
+  "legacyApprovalNote": "Top-level modelApproval, animationApproval, rigFinalizationApproval, boss and bossRigApproval record earlier player / Reliquary Saint stages. Current production authority is autonomousProductionApproval; current selected assets and review status are in overnightProduction. Humanoid rig provider is Uthana + Blender, superseding the historical Meshy proposal.",
+  "autonomousProductionApproval": true,
+  "autonomousProductionNote": "User approved the development plan and all remaining work through completion while away. Self-review replaces intermediate approval pauses within the approved designs.",
+  "environmentProductionApproval": true,
+  "effectsAudioProductionApproval": true,
+  "playerRigAnimationApproval": true,
+  "humanoidRigProvider": "Uthana + Blender",
+  "rigProviderApproval": "User explicitly approved Uthana + Blender to preserve designs, 2026-09-14",
+  "bossIdleReview": {
+    "rejectedTrial": "assets/idle-trial/boss-idle-study.glb",
+    "reason": "User rejected the non-threatening stance and deformed hands",
+    "currentStage": "approved-idle-integrated-essential-bundle",
+    "videoGenerationId": "cmu1p9l78004z2wp6fmqs4eo0",
+    "videoPath": "assets/idle-video-trial/image-1-defines-the-exact-hooded-armored-cmu1p9l7.mp4",
+    "videoGenerationApproved": true,
+    "videoResultApproved": true,
+    "motionExtractionStarted": true,
+    "nextStep": "Keep quarter-speed pacing baked in; use runtime rate1.",
+    "handRepairDeferred": true,
+    "motionExtractionCompleted": true,
+    "motionGenerationId": "cmu1pj1hk005h2wp6hjbb0e60",
+    "motionPath": "assets/idle-video-motion/animate-character-cmu1gedz204a32pnwb9ti9-cmu1pj1h.glb",
+    "reviewModel": "assets/idle-video-motion/boss-idle-video.glb",
+    "reviewBlend": "assets/idle-video-motion/boss-idle-video.blend",
+    "reviewWeapon": "assets/idle-video-motion/scythe-fitted.glb",
+    "reviewUrl": "http://127.0.0.1:4174/animation-review.html?review=video-motion",
+    "motionResultApproved": true,
+    "latestFeedback": "User accepted the forward lean, requires idle pace 0.25x, and requested one forward walk for the boss instead of eight directions.",
+    "preferredReviewSpeed": 0.25,
+    "currentCorrectedVersionPreserved": true,
+    "videoRetryGenerationId": "cmu1r2bgo007n2wp6ep1a1w6l",
+    "videoRetryStatus": "completed-identical-to-first-extraction",
+    "textComparisonGenerationId": "cmu1r5pnp007u2wp61sedoqkh",
+    "textComparisonStatus": "completed-awaiting-review",
+    "rawTextReviewUrl": "http://127.0.0.1:4174/animation-review.html?review=raw-takes&take=text",
+    "rawVideoRetryReviewUrl": "http://127.0.0.1:4174/animation-review.html?review=raw-takes&take=video",
+    "rawComparisonModel": "assets/idle-raw-comparison/boss-raw-takes.glb",
+    "preferredMotionBase": "idle-forward-lean",
+    "forwardLean": {
+      "degrees": 5,
+      "model": "assets/idle-forward-lean/boss-forward-lean.glb",
+      "blend": "assets/idle-forward-lean/boss-forward-lean.blend",
+      "reviewUrl": "http://127.0.0.1:4174/animation-review.html?review=lean",
+      "resultApproved": true
+    },
+    "approvedPlaybackSpeed": 0.25,
+    "approvedAsset": "assets/approved/boss-idle.glb",
+    "approvedAssetTimingBaked": true,
+    "approvedAssetRuntimeSpeed": 1
+  },
+  "bossWalkReview": {
+    "scope": "one forward combat advance in a low, tense, two-handed scythe guard",
+    "generationApproved": true,
+    "videoGenerationId": "cmu1s7ol300922wp6zk22jefz",
+    "sourceImage": "assets/edit-the-attached-image-treat-this-chara-cmu1dtoz.png",
+    "videoResultApproved": true,
+    "motionExtractionStarted": true,
+    "reviewUrl": "http://127.0.0.1:4174/boss-walk-video.html",
+    "directionCount": 1,
+    "turning": "boss yaw follows target in game code",
+    "nextStep": "User playtest of the essential boss/player bundle, game feel, map, effects and cloth.",
+    "firstTakeVideoId": "cmu1rrghb00862wp6xexn8r4u",
+    "firstTakePath": "assets/boss-walk-video/image-1-defines-the-approved-hooded-armo-cmu1rrgh.mp4",
+    "firstTakeReview": "Readable guarded walk, but framing crowds the hood at the top; wider take requested before extraction.",
+    "status": "extracted-corrected-integrated-and-self-reviewed",
+    "visualReview": "Forward torso inclination, flexed knees and ready two-handed guard now persist. Opening crops part of rear boot and shaft at left edge. Feet take longer alternating steps rather than consistently preserving lead-foot step-and-gather; user should judge this combat motion direction before extraction.",
+    "previousVideoTakes": [
+      {
+        "id": "cmu1rrghb00862wp6xexn8r4u",
+        "path": "assets/boss-walk-video/image-1-defines-the-approved-hooded-armo-cmu1rrgh.mp4"
+      },
+      {
+        "id": "cmu1rw7mg006s2po0lh5hj43s",
+        "path": "assets/boss-walk-video-wide/image-1-is-a-design-reference-only-for-t-cmu1rw7m.mp4"
+      }
+    ],
+    "latestFeedback": "User accepted the combat-advance video, authorized Uthana extraction and essential boss/player work in parallel while sleeping; maximum roughly four hours, with remaining time for map, effects and cloth polish.",
+    "sourceImages": [
+      "assets/edit-the-attached-image-treat-this-chara-cmu1dtoz.png",
+      "assets/idle-forward-lean/review/idle-forward-lean-quarter.png"
+    ],
+    "videoPath": "assets/a-combat-animation-study-a-hooded-armore-cmu1s7ol.mp4",
+    "motionExtractionCompleted": true,
+    "motionGenerationId": "cmu1sfnua007c2po0jetx1jxd",
+    "motionPath": "assets/animate-character-cmu1gedz204a32pnwb9ti9-cmu1sfnu.glb"
+  },
+  "overnightProduction": {
+    "startedAt": "2026-09-14T22:01:43Z",
+    "stopBy": "2026-09-15T02:01:43Z",
+    "scope": "essential motion, blending, playable encounter, map realism, effects and separate cloth",
+    "playerAsset": "assets/production/player-essential.glb",
+    "bossAsset": "assets/production/boss-essential.glb",
+    "bossWeapon": "assets/idle-video-motion/scythe-fitted.glb",
+    "motionManifests": [
+      "docs/player-essential-manifest.json",
+      "docs/boss-essential-manifest.json"
+    ],
+    "designChanges": false,
+    "generationCounts": {
+      "bossVideoReferences": 2,
+      "bossMotionExtractions": 3,
+      "playerMotionRequests": 2
+    },
+    "status": "self-reviewed-ready-for-user",
+    "newMotionResultUserReview": "Pending user return. Generation and implementation were authorized; self-review does not imply the user has approved every new motion result.",
+    "verification": "docs/current-build-verification.json",
+    "qa": "docs/overnight-qa.md",
+    "motionCorrections": "docs/motion-corrections-explained.md",
+    "reviewUrls": {
+      "game": "http://127.0.0.1:4174/",
+      "studio": "http://127.0.0.1:4174/animation-review.html",
+      "videos": "http://127.0.0.1:4174/motion-videos.html"
+    },
+    "sourceTreeSha256": "838675eb02c2f8c2b115c8b17f57cf3db016c9c4030fc711aaebd894d5f703e3",
+    "completedAt": "2026-09-15T01:57:25.968986+00:00"
+  }
+}

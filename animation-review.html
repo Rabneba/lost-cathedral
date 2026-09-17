@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#171b1e"><title>Vesper — Animation studio</title></head>
+<body>
+<main class="studio">
+ <aside class="sidebar">
+  <header class="studio-heading"><a href="/" aria-label="Back to Vesper">VESPER <span>↗</span></a><h1>Animation studio</h1><p>Choose a move. It plays automatically.</p></header>
+  <fieldset id="character-controls" disabled>
+   <legend>1. Choose a character</legend>
+   <div class="character-switch"><button type="button" data-actor="boss" aria-pressed="true">Boss</button><button type="button" data-actor="player" aria-pressed="false">Player</button></div>
+   <p id="character-name" class="character-name">Armored Death</p>
+  </fieldset>
+  <div class="animation-library">
+  <section class="animation-section" aria-labelledby="moves-heading"><h2 id="moves-heading">2. Choose an animation</h2><nav id="clip-list" aria-label="Animations"><p class="muted loading-list">Your animations will appear here.</p></nav><button id="transition-preview" disabled class="transition-button" type="button" aria-pressed="false" title="Watch movement blend into idle">Walk → stop</button></section>
+  <details id="movement-section" hidden><summary>Directional movement <span id="movement-count"></span></summary><div id="movement-list" class="movement-list"></div></details>
+  </div>
+  <fieldset id="display-controls" disabled><legend>Show on the model</legend><div class="display-options"><label><input id="weapons" type="checkbox" checked> Weapons & shield</label><label><input id="cloth" type="checkbox" checked> Loose cloth</label><label title="Cyan: where the head looks. Amber: where the pelvis faces. White: the gameplay facing."><input id="facing" type="checkbox"> Facing lines</label><small id="facing-readout" class="facing-readout" hidden></small><label title="As in the game: the neck and head turn toward the opponent on top of the clip. Uncheck to see the captured head."><input id="gaze" type="checkbox" checked> Head tracks the opponent</label><label id="travel-option" hidden><input id="travel" type="checkbox" checked> Show ground travel</label><label id="opponent-option" title="A stationary opponent, with equipment hidden to make the strike easier to inspect." hidden><input id="opponent" type="checkbox"> Show opponent</label><div id="opponent-spacing" hidden><label for="opponent-distance">Opponent distance <output id="opponent-distance-value">1.3 m</output></label><input id="opponent-distance" type="range" min="1.3" max="4.5" step="0.05" value="1.3"></div></div></fieldset><fieldset id="mount-editor" disabled><legend>Shield mount editor</legend><div class="display-options"><label><input id="mount-edit" type="checkbox"> Edit the shield with a gizmo</label><div id="mount-tools" hidden><div class="mount-modes"><button data-mode="translate" aria-pressed="true">Move</button><button data-mode="rotate" aria-pressed="false">Rotate</button><button data-mode="scale" aria-pressed="false">Scale</button></div><textarea id="mount-json" rows="5" readonly spellcheck="false"></textarea><div class="mount-actions"><button id="mount-copy">Copy params</button><button id="mount-reset">Reset</button></div><small class="muted">Drag the gizmo (keys: T move · R rotate · S scale), then copy the params and send them. The edit is kept in this browser until reset.</small></div></div></fieldset>
+  <footer class="sidebar-footer">The same characters and animations used in the game.<br><a href="/motion-videos.html">Watch motion videos ↗</a></footer>
+ </aside>
+ <section class="workspace" aria-label="Animation preview">
+  <div id="viewport" class="viewport">
+   <canvas id="preview" aria-label="3D character preview. Drag to orbit and scroll to zoom." tabindex="0"></canvas>
+   <fieldset id="view-controls" class="view-controls" disabled aria-label="Camera views"><div class="view-buttons"><button type="button" data-view="quarter" aria-pressed="true">¾ view</button><button type="button" data-view="front" aria-pressed="false">Front</button><button type="button" data-view="side" aria-pressed="false">Side</button><button type="button" data-view="back" aria-pressed="false">Back</button><button type="button" data-view="body" aria-pressed="false" title="Frame the character closely; the weapon may extend outside the view">Character</button><button type="button" data-view="hands" aria-pressed="false">Hands</button><button type="button" data-view="head" aria-pressed="false">Head</button><button type="button" data-view="feet" aria-pressed="false" title="Inspect boot contact and leg support">Feet</button><button type="button" id="fit-view" title="Fit the whole animation in the view">Fit view</button></div></fieldset>
+   <div class="stage-caption"><span id="stage-character">ARMORED DEATH</span><h2 id="stage-animation">Loading character…</h2><p id="clip-description">Preparing the model and its animations.</p></div>
+   <p class="orbit-hint">Drag to rotate <span>·</span> Scroll to zoom</p>
+   <div id="loading" role="status"><div class="loading-symbol" aria-hidden="true"></div><strong id="load-title">Loading the characters</strong><p id="load-detail">The models are detailed. Controls will unlock when they’re ready.</p><button type="button" id="retry-load" hidden>Try again</button></div>
+  </div>
+  <fieldset id="transport" class="transport" disabled aria-label="Animation playback">
+   <div class="transport-header"><span id="playback-status" class="playback-status">Loading</span><span id="phase" class="phase"></span><output id="time-readout" for="timeline" aria-live="off">0.00 / 0.00 s</output></div>
+   <label class="sr-only" for="timeline">Animation timeline</label><div class="timeline-wrap"><div id="phase-track" aria-hidden="true"></div><input id="timeline" type="range" min="0" max="1" value="0" step="0.001" aria-valuetext="0 seconds"></div>
+   <div class="transport-bottom"><div class="play-buttons"><button type="button" id="restart" title="Replay from the beginning">↺ <span>Restart</span></button><button type="button" id="previous-frame" aria-label="Previous frame" title="Back 1/60 second">❮</button><button type="button" id="play" class="primary">▶ Play</button><button type="button" id="next-frame" aria-label="Next frame" title="Forward 1/60 second">❯</button></div><div class="play-options"><label for="speed">Speed</label><select id="speed" title="Game pace matches movement in the encounter"><option value="game" selected>Game pace</option><option value=".25">0.25× · slow</option><option value=".5">0.5×</option><option value="1">1× · clip speed</option></select><label class="loop-option"><input id="loop" type="checkbox" checked> Loop</label></div></div>
+   <div class="pose-row"><span id="pose-help">Drag the timeline to pause on any pose.</span><div id="pose-buttons" aria-label="Jump to an attack pose"></div></div>
+   <p class="keyboard-hint"><kbd>Space</kbd> play / pause <span>·</span> <kbd>←</kbd> <kbd>→</kbd> step through poses</p>
+  </fieldset>
+ </section>
+</main>
+<script type="module" src="/src/preview/animation.js"></script>
+</body></html>

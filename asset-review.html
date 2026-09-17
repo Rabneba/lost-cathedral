@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Thorn Exile · Asset review</title></head>
+  <body>
+    <div id="app">
+      <header><a class="wordmark" href="#player-body">THORN <em>EXILE</em></a><span class="edition">Selected characters / 3D review</span><span class="stage-tag">STATIC PREVIEWS</span></header>
+      <aside class="asset-panel"><p class="eyebrow">01 / THE CHOSEN DESIGNS</p><h1>Shape of<br>the forsaken.</h1><p class="intro">Inspect the body and its separate equipment. Drag the model to turn it.</p><nav id="assets" aria-label="Generated assets"></nav><div class="review-note">Cloth is attached in code.<br>Custom boss rig ready for review.</div></aside>
+      <main>
+        <div class="viewport" id="viewport"><canvas aria-label="Interactive 3D model. Drag to orbit, scroll to zoom."></canvas><div class="asset-heading"><span id="part-label" class="eyebrow"></span><h2 id="asset-title"></h2></div><div id="load-status" role="status" aria-live="polite"></div><div class="view-hint">DRAG TO ORBIT <span>·</span> SCROLL TO ZOOM <span>·</span> RIGHT DRAG TO PAN</div></div>
+        <div class="toolbar"><div class="button-group" aria-label="Camera views"><button data-view="front">Front</button><button data-view="back">Back</button><button data-view="side">Side</button><button data-view="fit">Reset view</button></div><div class="button-group" aria-label="Material display"><button data-material="original" aria-pressed="true">Materials</button><button data-material="clay" aria-pressed="false">Clay</button><button data-material="wire" aria-pressed="false">Wireframe</button></div><label id="cloth-option"><input type="checkbox" id="cloth-toggle"> Cloth layout</label><button id="save-view">Save image</button></div>
+        <section id="rig-controls" hidden aria-label="Rig inspection"><span class="eyebrow">STATIC POSE CHECKS</span><div class="button-group"><button data-pose="rest" aria-pressed="true">Rest</button><button data-pose="shoulder">Shoulder</button><button data-pose="leg">Leg bend</button><button data-pose="crouch">Planted feet</button><button data-pose="weapon">Weapon grip</button></div><button id="inspect-grip">Grip close-up</button><label><input id="skeleton-toggle" type="checkbox"> Skeleton</label><label><input id="weapon-toggle" type="checkbox"> Blade</label><a id="download-blend" download>Blender file ↗</a></section>
+        <section class="asset-details"><div><p id="asset-description"></p><span id="mesh-stats"></span></div><a id="download-model" class="download" download>Download GLB <span>↗</span></a></section>
+      </main>
+      <aside class="references"><p class="eyebrow">SOURCE & CONSTRUCTION</p><button class="reference-image" id="concept-open"><img id="concept-image" alt="Selected original character concept"><span>Approved concept ↗</span></button><button class="reference-image" id="input-open"><img id="input-image" alt="Clean isolated input used for this 3D model"><span>Isolated model input ↗</span></button><p id="separation-note"></p></aside>
+      <dialog id="image-dialog"><button id="close-dialog" aria-label="Close image">×</button><img alt="Full size character reference"></dialog>
+    </div><script type="module" src="/src/preview/main.js"></script>
+  </body>
+</html>

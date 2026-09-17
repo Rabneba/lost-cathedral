@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050404"><title>Lost Cathedral</title></head><body>
+<canvas id="game" aria-label="Lost Cathedral, third-person boss encounter" tabindex="0"></canvas>
+<div class="vignette"></div><div id="damage-flash"></div>
+
+<div id="loading" role="status"><div class="load-art" aria-hidden="true"></div><div class="load-text"><p class="load-title">Awakening the cathedral</p><div class="load-rule" aria-hidden="true"><i></i></div><small id="load-detail">Stone, ash and a forgotten oath.</small></div></div>
+
+<!-- No start menu: the fight begins out of this black veil as soon as the assets are in (hud.js liftVeil). #begin stays,
+     hidden, because scripts/game-capture.mjs, browser-playtest.mjs and roll-playtest.mjs click it to (re)start the fight. -->
+<div id="veil" aria-hidden="true"></div>
+<button id="begin" hidden aria-hidden="true" tabindex="-1">Begin</button>
+
+<div id="hud" hidden>
+<div class="vitals"><div class="bar health-bar" id="health-bar"><u id="hp-lag"></u><i id="hp"></i></div><div class="bar stamina-bar" id="stamina-bar"><u id="stamina-lag"></u><i id="stamina"></i></div></div>
+<div class="location"><span>Cathedral of the Last Rite</span><small id="phase-caption">The Vigil</small></div>
+<div id="lock-mark" hidden aria-hidden="true"><svg viewBox="0 0 32 32"><circle class="ring" cx="16" cy="16" r="9.5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="9 3 14 2 6 4"/><circle class="dot" cx="16" cy="16" r="1.5" fill="currentColor"/></svg></div>
+<div class="equipment"><div class="flask" aria-label="Ember draughts"><b id="flasks">3</b></div><div class="use-key" aria-hidden="true"><kbd>R</kbd><span>use</span></div></div>
+<div class="boss-vitals"><div class="boss-head"><span id="boss-name">Armored Death</span></div><div class="bar boss-bar" id="boss-bar"><u id="boss-lag"></u><i id="boss-hp"></i></div></div>
+<div class="control-hint"><b><kbd>WASD</kbd>Move</b><b><kbd>J</kbd>Attack</b><b><kbd>J J</kbd>Combo</b><b><kbd>Hold J</kbd>Heavy</b><b><kbd>L</kbd>Guard</b><b><kbd>Space</kbd>Roll</b><b><kbd>Q</kbd>Lock</b><b><kbd>Esc</kbd>Pause</b></div>
+<div id="notice" aria-live="polite"></div>
+</div>
+
+<section id="result" hidden><div class="result-inner"><p id="result-overline"></p><h2 id="result-title"></h2><p id="result-detail"></p><button id="retry">Rise again</button></div></section>
+
+<dialog id="settings"><div class="settings-inner"><button class="close" id="close-settings" aria-label="Close settings">×</button><h2 id="settings-title">Pause</h2><div class="settings-grid"><div><h3>Controls</h3><dl><dt>Move</dt><dd>W A S D</dd><dt>Look (Q unlock)</dt><dd>Mouse drag</dd><dt>Zoom</dt><dd>Mouse wheel</dd><dt>Light attack</dt><dd>Left click / J · tap again to combo</dd><dt>Heavy attack</dt><dd>Hold J / K</dd><dt>Forward roll</dt><dd>Space</dd><dt>Hold shield</dt><dd>Right click / L</dd><dt>Lock on</dt><dd>Q</dd><dt>Ember draught</dt><dd>R</dd><dt>Pause</dt><dd>Escape</dd></dl></div><div><h3>Presentation</h3><label>Graphics<select id="quality"><option value="high">High · MSAA + SMAA + bloom</option><option value="balanced">Balanced</option><option value="low">Performance</option></select></label><label>Floor<select id="floor"><option value="basalt">Black basalt</option><option value="chequer">Chequered marble</option><option value="marble">Dark marble, diagonal</option></select></label><label>Brightness<input id="brightness" type="range" min=".7" max="1.7" step=".01" value="1.36"></label><label>Music track<select id="music-track"><option value="cathedral">The cathedral (original)</option><option value="steady">Brooding vigil (in between)</option><option value="dread">Choir of dread</option><option value="bells">Funeral bells</option></select></label><label>Music<input id="music-volume" type="range" min="0" max="1" step=".05" value=".2"></label><label>Effects<input id="effects-volume" type="range" min="0" max="1" step=".05" value=".6"></label><label class="check"><input type="checkbox" id="toggle-movement"> Toggle movement keys</label><label class="check"><input type="checkbox" id="toggle-shield"> Toggle shield key (L)</label><label class="check"><input type="checkbox" id="show-stats"> Performance monitor</label></div></div><div class="dialog-foot"><div class="dialog-actions"><button id="resume">Return</button><button id="restart">Restart encounter</button></div></div></div></dialog>
+
+<output id="telemetry" hidden></output><script type="module" src="/src/game/main.js"></script></body></html>

@@ -1,0 +1,611 @@
+{
+ "asset": "assets/player-combat-revision/player-video-candidate-v6.glb",
+ "characterId": "cmu1g9dee049k2pnw1spkx8ku",
+ "revision": "video-combat-candidate-2026-09-15",
+ "baselineSha256": "669745911d67e34815631167589dde257545e792ea5437e548c3effea9468433",
+ "sha256": "51834f454aca5d8706c9dbaef2f487745fa4c3b94a30a44353dcf96abc2db6ad",
+ "locomotionSpeed": 2.96,
+ "guardSpeed": 1.45,
+ "strafeSpeed": 2.25,
+ "retreatSpeed": 1.9,
+ "clips": {
+  "run-back-left": {
+   "duration": 0.9333333373069763,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 2.29,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "run-back-right": {
+   "duration": 0.9333333373069763,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 2.55,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "run-backward": {
+   "duration": 0.9333333373069763,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 2.52,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "run-forward": {
+   "duration": 1.2000000476837158,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 2.96,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "run-forward-left": {
+   "duration": 1.0666667222976685,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 3.04,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "run-forward-right": {
+   "duration": 1.0666667222976685,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 3.01,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "run-left": {
+   "duration": 1.0666667222976685,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 2.48,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "run-right": {
+   "duration": 1.0666667222976685,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 2.52,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-back-left": {
+   "duration": 1.1333333253860474,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.73,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-back-right": {
+   "duration": 1.1333333253860474,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.75,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-backward": {
+   "duration": 1.2333333492279053,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.65,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-forward": {
+   "duration": 1.6666666269302368,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.54,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-forward-left": {
+   "duration": 1.4333332777023315,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.65,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-forward-right": {
+   "duration": 1.4333332777023315,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.66,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-left": {
+   "duration": 1.2000000476837158,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.86,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "walk-right": {
+   "duration": 1.2333333492279053,
+   "loop": true,
+   "blendIn": 0.22,
+   "sourceSpeed": 1.62,
+   "source": "existing Uthana 16-way torso performance, with Blender support/swing leg cleanup and torso-relative guard; lateral provider source remapped to game anatomy; same duration and pace",
+   "sourceSpeedMethod": "original median ankle estimate retained as the controller pace; revised support-foot curves counter-translate at this speed, verified on actual weighted sole surface points"
+  },
+  "heal": {
+   "duration": 1.399999976158142,
+   "blendIn": 0.16,
+   "source": "retained previous utility action, not regenerated"
+  },
+  "death": {
+   "duration": 2.799999952316284,
+   "blendIn": 0.16,
+   "source": "Retained death body with captured new-guard entry and physical sword-floor cleanup"
+  },
+  "idle": {
+   "duration": 4,
+   "blendIn": 0.1,
+   "sourceFrames": [
+    30,
+    150
+   ],
+   "source": "generated reference video -> explicit Uthana user_video -> rest-basis/contact/prop correction",
+   "sourceVideo": "assets/player-combat-revision/source-videos/guard-v2.mp4",
+   "loop": true,
+   "facingYawDegrees": -35,
+   "smoothBones": {
+    "pattern": "LeftArm$|LeftForeArm$|LeftHand",
+    "windowSeconds": 0.6
+   }
+  },
+  "block": {
+   "duration": 4,
+   "blendIn": 0.18,
+   "sourceFrames": [
+    30,
+    150
+   ],
+   "source": "Reviewed guard-v2 video capture; separate defensive brace with shield12cm forward/10cm up, pelvis3cm lower and3degree lean, planted-foot correction",
+   "sourceVideo": "assets/player-combat-revision/source-videos/guard-v2.mp4",
+   "loop": true,
+   "facingYawDegrees": -35,
+   "smoothBones": {
+    "pattern": "LeftArm$|LeftForeArm$|LeftHand",
+    "windowSeconds": 0.6
+   }
+  },
+  "light": {
+   "duration": 1.5,
+   "blendIn": 0.1,
+   "sourceFrames": [
+    0,
+    140
+   ],
+   "source": "generated reference video -> explicit Uthana user_video -> rest-basis/contact/prop correction",
+   "sourceVideo": "assets/player-combat-revision/source-videos/light-v3.mp4",
+   "windup": 0.46,
+   "active": 0.26,
+   "recovery": 0.78,
+   "hitWindows": [
+    [
+     0.49,
+     0.68
+    ]
+   ],
+   "facingYawDegrees": -35
+  },
+  "heavy": {
+   "duration": 1.9,
+   "blendIn": 0.1,
+   "sourceFrames": [
+    0,
+    154
+   ],
+   "source": "generated reference video -> explicit Uthana user_video -> rest-basis/contact/prop correction",
+   "sourceVideo": "assets/player-combat-revision/source-videos/heavy-v2.mp4",
+   "windup": 0.78,
+   "active": 0.3,
+   "recovery": 0.82,
+   "hitWindows": [
+    [
+     0.81,
+     1.04
+    ]
+   ]
+  },
+  "hit": {
+   "duration": 1.1666666666666667,
+   "blendIn": 0.1,
+   "sourceFrames": [
+    30,
+    130
+   ],
+   "source": "generated reference video -> explicit Uthana user_video -> rest-basis/contact/prop correction",
+   "sourceVideo": "assets/player-combat-revision/source-videos/hit-v3.mp4",
+   "travelCurve": [
+    [
+     0,
+     0
+    ],
+    [
+     0.03333333333333333,
+     0.009099928510582528
+    ],
+    [
+     0.06666666666666667,
+     0.018199857021165035
+    ],
+    [
+     0.1,
+     0.042740508019876416
+    ],
+    [
+     0.13333333333333333,
+     0.06899679485060203
+    ],
+    [
+     0.16666666666666666,
+     0.10356957906884051
+    ],
+    [
+     0.2,
+     0.14022148763395728
+    ],
+    [
+     0.23333333333333334,
+     0.18113132924182238
+    ],
+    [
+     0.26666666666666666,
+     0.2238659992965798
+    ],
+    [
+     0.3,
+     0.2704596741114494
+    ],
+    [
+     0.3333333333333333,
+     0.31962601876639385
+    ],
+    [
+     0.36666666666666664,
+     0.3542400315220692
+    ],
+    [
+     0.4,
+     0.37430171237847537
+    ],
+    [
+     0.43333333333333335,
+     0.3958541271586985
+    ],
+    [
+     0.4666666666666667,
+     0.4196426428246472
+    ],
+    [
+     0.5,
+     0.4426045232251495
+    ],
+    [
+     0.5333333333333333,
+     0.4636375880062766
+    ],
+    [
+     0.5666666666666667,
+     0.48380809888363074
+    ],
+    [
+     0.6,
+     0.5005283941458931
+    ],
+    [
+     0.6333333333333333,
+     0.5166243939292795
+    ],
+    [
+     0.6666666666666666,
+     0.5271017344027809
+    ],
+    [
+     0.7,
+     0.5375790748762823
+    ],
+    [
+     0.7333333333333333,
+     0.5437769498969944
+    ],
+    [
+     0.7666666666666667,
+     0.5499748249177066
+    ],
+    [
+     0.8,
+     0.5534969826801962
+    ],
+    [
+     0.8333333333333334,
+     0.5567218385251056
+    ],
+    [
+     0.8666666666666667,
+     0.5587105855866931
+    ],
+    [
+     0.9,
+     0.56039030545245
+    ],
+    [
+     0.9333333333333333,
+     0.5608942214121772
+    ],
+    [
+     0.9666666666666667,
+     0.5608942214121772
+    ],
+    [
+     1.0,
+     0.5608942214121772
+    ],
+    [
+     1.0333333333333334,
+     0.5608942214121772
+    ],
+    [
+     1.0666666666666667,
+     0.5608942214121772
+    ],
+    [
+     1.1,
+     0.5608942214121772
+    ],
+    [
+     1.1333333333333333,
+     0.5608942214121772
+    ],
+    [
+     1.1666666666666667,
+     0.5608942214121772
+    ]
+   ],
+   "direction": "backward",
+   "distance": 0.5608942214121772,
+   "facingYawDegrees": -35
+  },
+  "dodge": {
+   "duration": 1.4333333333333333,
+   "blendIn": 0.1,
+   "sourceFrames": [
+    0,
+    154
+   ],
+   "source": "generated reference video -> explicit Uthana user_video -> rest-basis/contact/prop correction",
+   "sourceVideo": "assets/player-combat-revision/source-videos/roll-v2.mp4",
+   "travelCurve": [
+    [
+     0,
+     0
+    ],
+    [
+     0.03333333333333333,
+     0.029492458328604698
+    ],
+    [
+     0.06666666666666667,
+     0.08108318183157179
+    ],
+    [
+     0.1,
+     0.14536671588818234
+    ],
+    [
+     0.13333333333333333,
+     0.22944185468885633
+    ],
+    [
+     0.16666666666666666,
+     0.3390796002414492
+    ],
+    [
+     0.2,
+     0.4711103439331055
+    ],
+    [
+     0.23333333333333334,
+     0.6231219238705106
+    ],
+    [
+     0.26666666666666666,
+     0.7622783713870578
+    ],
+    [
+     0.3,
+     0.8997738659381866
+    ],
+    [
+     0.3333333333333333,
+     1.0705113278494942
+    ],
+    [
+     0.36666666666666664,
+     1.2281609773635862
+    ],
+    [
+     0.4,
+     1.4105928341547649
+    ],
+    [
+     0.43333333333333335,
+     1.5644116070535452
+    ],
+    [
+     0.4666666666666667,
+     1.697052836418152
+    ],
+    [
+     0.5,
+     1.8188413977622988
+    ],
+    [
+     0.5333333333333333,
+     1.9200479057100084
+    ],
+    [
+     0.5666666666666667,
+     1.9993301033973692
+    ],
+    [
+     0.6,
+     2.058347225189209
+    ],
+    [
+     0.6333333333333333,
+     2.0902367432912192
+    ],
+    [
+     0.6666666666666666,
+     2.108987463845147
+    ],
+    [
+     0.7,
+     2.1244966189066568
+    ],
+    [
+     0.7333333333333333,
+     2.152980433570014
+    ],
+    [
+     0.7666666666666667,
+     2.2026604811350508
+    ],
+    [
+     0.8,
+     2.2481802304585776
+    ],
+    [
+     0.8333333333333334,
+     2.2850807242923312
+    ],
+    [
+     0.8666666666666667,
+     2.3332997428046336
+    ],
+    [
+     0.9,
+     2.3902825117111206
+    ],
+    [
+     0.9333333333333333,
+     2.4300597773657904
+    ],
+    [
+     0.9666666666666667,
+     2.4662290811538696
+    ],
+    [
+     1.0,
+     2.4953224658966064
+    ],
+    [
+     1.0333333333333334,
+     2.52512538433075
+    ],
+    [
+     1.0666666666666667,
+     2.555917077594333
+    ],
+    [
+     1.1,
+     2.5787562529246015
+    ],
+    [
+     1.1333333333333333,
+     2.601518577999539
+    ],
+    [
+     1.1666666666666667,
+     2.6304298639297485
+    ],
+    [
+     1.2,
+     2.6507339477539062
+    ],
+    [
+     1.2333333333333334,
+     2.6507339477539062
+    ],
+    [
+     1.2666666666666666,
+     2.6507339477539062
+    ],
+    [
+     1.3,
+     2.6507339477539062
+    ],
+    [
+     1.3333333333333333,
+     2.6507339477539062
+    ],
+    [
+     1.3666666666666667,
+     2.6507339477539062
+    ],
+    [
+     1.4,
+     2.6507339477539062
+    ],
+    [
+     1.4333333333333333,
+     2.6507339477539062
+    ]
+   ],
+   "direction": "forward",
+   "distance": 2.6507339477539062,
+   "invulnerable": [
+    0.13,
+    0.63
+   ]
+  }
+ },
+ "reviewStatus": "Root selected V6 after independent complete heavy sequence and actual browser hand/character closeup review; overhead lift/downward cut coherent, no hood crossing. Runtime gameplay check follows. Forearm bound produces a shallower blade finish.",
+ "rollAdditionalHeadingNormalizationDegrees": -27.671363225826894,
+ "sourceReview": "docs/player-combat-revision/source-review.json",
+ "limitations": [
+  "Video extraction omits root travel; roll surface travel and hit fixed-camera translation reconstructed.",
+  "Heavy weapon orientation follows measured reference blade angles; body remains captured, forearm pronation/wrist flex corrected.",
+  "Approved mesh and equipment retained; detailed armor contact still requires rendered review."
+ ],
+ "previousCandidateSha256": "38030ab753a1f7a6bb41826288a38fa93897d3bd47160564a1572cec9e17472a",
+ "shieldMount": {
+  "height": 0.95,
+  "quaternion": [
+   0.9355,
+   0.237,
+   0.2169,
+   -0.1473
+  ],
+  "position": [
+   -0.141,
+   0.273,
+   0.237
+  ],
+  "source": "scripts/solve-shield-mount.mjs (SHIELD_DROP=.2) on idle 1.0 s: face normal follows the fist's heading pitched 18 degrees up (the fist itself points 43 degrees up), height axis upright, centre 9 cm in front of the fist and 20 cm down the shield's height axis so the top sits at chin height. Replaces the along-the-forearm mount at 0.73 m.",
+  "tuck": {
+   "position": [
+    0,
+    0.1,
+    0
+   ],
+   "note": "During the forward roll the shield blends back to the legacy along-the-forearm orientation (shieldTuckWeight in src/game/actors.js), raised 10 cm along the socket Y axis; the props audit then shows 3 mm of floor overlap at 0.32 s instead of 37 cm with the guard mount held."
+  }
+ },
+ "runtimeAdjustments": {
+  "facingYawDegrees": "The captured guard family has the body square to camera and the head turned 35 degrees to the model's left (pose-inspection.json). idle, block, hit and light turn the visual root -35 degrees, blended by animation weight, so the gaze and the bladed stance face the opponent without editing the GLB. The overhead heavy stays at 0 and squares up through its 0.12 s blend: scripts/sweep-player-stance-yaw.mjs shows the narrow chop misses a target straight ahead at any other yaw, while the light cut reaches it more often at -35 (17/23 samples) than at 0 (10/23). Locomotion, heal and dodge stay at 0.",
+  "smoothBones": "A captured left-hand twitch at 0.65-0.70 s (292 deg/s, median 18) is removed by a loop-aware 0.6 s Gaussian on the left arm chain in idle and block."
+ }
+}

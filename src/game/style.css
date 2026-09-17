@@ -1,0 +1,227 @@
+/* Vesper — the grim interface (round 2, variant D, approved from docs/round-2-2026-09-16/ui-mockups.html).
+   Stamped on old iron and left in a crypt: no ornament, no glow, no bright edge. Ink is never
+   white (bone #938872 at most), every glyph carries a hard 1 px near-black shadow and a soft dark
+   halo so it sits INTO the picture, and a tiling grunge mask (assets/ui/grunge-mask.png, procedural,
+   alpha = ink that survives) eats the edges of the bars, the boss name and its cracked rule, YOU
+   DIED and the loading rule. Last night's ornament PNGs stay on disk but nothing loads them.
+
+   ── THE TYPEFACE SWAP ──────────────────────────────────────────────────────────────────────
+   Two lines decide the face of the whole interface: --hud-serif and --hud-sc in :root below.
+   Shipped, all SIL OFL from github.com/google/fonts, loaded locally (never the CDN):
+     IM Fell English + IM Fell English SC   (uneven 17th-century letterpress; the recommendation)
+     Almendra + Almendra SC                  (sharp calligraphic gothic; the alternate)
+   To switch to Almendra:  --hud-serif:'Almendra',Georgia,serif;  --hud-sc:'Almendra SC','Almendra',serif;
+   A face without a small-caps companion sets --hud-sc to the same family and --hud-scv:small-caps. */
+@font-face{font-family:'IM Fell English';src:url(../../assets/fonts/IMFellEnglish-Regular.woff2) format('woff2'),url(../../assets/fonts/IMFeENrm28P.ttf) format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'IM Fell English';src:url(../../assets/fonts/IMFeENit28P.ttf) format('truetype');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'IM Fell English SC';src:url(../../assets/fonts/IMFellEnglishSC-Regular.woff2) format('woff2'),url(../../assets/fonts/IMFeENsc28P.ttf) format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Almendra';src:url(../../assets/fonts/Almendra-Regular.woff2) format('woff2'),url(../../assets/fonts/Almendra-Regular.ttf) format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Almendra SC';src:url(../../assets/fonts/AlmendraSC-Regular.woff2) format('woff2'),url(../../assets/fonts/AlmendraSC-Regular.ttf) format('truetype');font-weight:400;font-style:normal;font-display:swap}
+/* The Fell and Almendra faces carry only old-style figures (their 1 is a small I, their 0 an o), unreadable
+   as a draught count. Digits alone come from Cinzel (already local, SIL OFL, lining numerals) via unicode-range. */
+@font-face{font-family:'Vesper Figures';src:url(../../assets/fonts/Cinzel-Variable.woff2) format('woff2'),url(../../assets/fonts/Cinzel-Variable.ttf) format('truetype');font-weight:400 900;unicode-range:U+0030-0039;font-display:swap}
+
+:root{
+ --hud-serif:'IM Fell English',Georgia,serif;
+ --hud-sc:'IM Fell English SC','IM Fell English',serif;
+ --hud-scv:normal;   /* small-caps synthesis for --hud-sc: normal when it is a real SC face */
+ --hud-scale:1.06;   /* optical size correction for the chosen face (Fell runs small) */
+ --grunge:url(../../assets/ui/grunge-mask.png);   /* fine pits + scratches: nibbles text edges (composited over a translucent base, never removes a stroke) */
+ --erode:url(../../assets/ui/grunge-erode.png);   /* large soft bites: composited under a protected centre band it makes a bar's OUTLINE ragged */
+ --stain:url(../../assets/ui/grunge-stain.png);   /* black at 0–22 % alpha: mottling, scratches, specks laid over the bars — darkening, never holes */
+ /* ink */
+ --ink:#050404;--bone:#938872;--bone-hi:#9d927c;--cap:#5f584e;--hint:#453f38;--iron:#3a3630;--track:#0a0908;
+ --blood-a:#4c110d;--blood-b:#200503;--ember:#6e2e12;--moss-a:#334233;--moss-b:#151b13;--ash:#443f38;--dried:#62170f;
+ --ink-shadow:1px 1px 0 #050403,0 0 6px #000,0 0 16px #000c;
+ /* grid: the mockup's pixels at 1600 wide, as viewport fractions with floors and caps for 1280 and 2560 */
+ --m:clamp(20px,2.5vw,64px);
+ --hp-w:clamp(300px,34vw,880px);--hp-h:clamp(8px,.69vw,17px);
+ --st-w:clamp(255px,28.9vw,748px);--st-h:clamp(6px,.5vw,13px);
+ --bs-w:clamp(360px,44vw,1120px);--bs-h:clamp(6px,.5vw,13px);
+ --fs-name:clamp(18px,1.75vw,44px);--fs-cap:clamp(10px,.78vw,20px);--fs-notice:clamp(11px,.94vw,24px);
+ --fs-hint:clamp(9px,.72vw,18px);--fs-count:clamp(16px,1.5vw,38px);--fs-title:clamp(46px,6vw,150px);
+ font-family:var(--hud-serif);color:var(--bone);background:var(--ink);font-synthesis:none;color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;background:#050405}/* 17 Sep: a dark pre-boot frame for the hosted page (Genex embed card) */
+canvas{display:block;width:100vw;height:100vh;outline:none}
+button,select,input{font:inherit}
+button{cursor:pointer;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:1px solid var(--cap);outline-offset:4px}
+[hidden]{display:none!important}
+
+.vignette{pointer-events:none;position:fixed;inset:0;box-shadow:inset 0 0 150px 34px #000a,inset 0 0 420px 10px #0006}
+#damage-flash{position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 150px #6a1410;opacity:0;transition:opacity .12s}
+/* The black the fight starts out of: opaque under the loading screen (z 10), lifted by start() over 1.5 s;
+   .snap re-covers it without a transition so a restart fades in from black again (hud.js liftVeil). */
+#veil{position:fixed;inset:0;background:#000;z-index:9;pointer-events:none;opacity:1;transition:opacity 1.5s ease-out}
+#veil.lift{opacity:0}
+#veil.snap{transition:none}
+
+/* ─── shared type ──────────────────────────────────────────────────────── */
+.sc,.location,#notice,kbd,.load-title,#settings h2,#settings h3,#retry,.dialog-foot{font-family:var(--hud-sc);font-variant:var(--hud-scv)}
+/* main.js writes these two in capitals; a small-caps face wants them lower so they set as small caps */
+#phase-caption{text-transform:lowercase}
+
+/* ─── loading ──────────────────────────────────────────────────────────── */
+#loading{position:fixed;inset:0;background:#000;z-index:10;color:var(--cap);overflow:hidden}
+/* assets/ui/loader-cathedral.jpg (generated, docs/asset-plan.md): a ruined nave at the top of the black, bleeding out at every edge */
+.load-art{position:absolute;left:50%;top:0;transform:translateX(-50%);width:min(1500px,100vw);height:68vh;
+ background:url(../../assets/ui/loader-cathedral.jpg) center 30%/cover no-repeat;opacity:.62;filter:saturate(.45) contrast(1.08) brightness(.8);
+ mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%),linear-gradient(90deg,transparent 0%,#000 22%,#000 78%,transparent 100%);
+ -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 45%,transparent 100%),linear-gradient(90deg,transparent 0%,#000 22%,#000 78%,transparent 100%);
+ mask-composite:intersect;-webkit-mask-composite:source-in;animation:ink 2.4s ease-out both}
+.load-art::after{content:'';position:absolute;inset:0;background:var(--stain) 0 0/260px 260px repeat;opacity:.9}
+.load-text{position:absolute;left:0;right:0;top:70vh;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,1vw,20px)}
+.load-rule{position:relative;width:clamp(200px,19vw,420px);height:1px;background:var(--iron);
+ mask-image:var(--grunge);-webkit-mask-image:var(--grunge);mask-size:120px 120px;-webkit-mask-size:120px 120px}
+.load-rule i{position:absolute;left:0;top:0;bottom:0;background:var(--cap);animation:crawl 12s cubic-bezier(.1,.6,.3,1) forwards}
+@keyframes crawl{from{width:4%}to{width:82%}}
+#loading small{font:400 calc(var(--fs-hint)*var(--hud-scale))/1.5 var(--hud-serif);letter-spacing:.06em;color:var(--hint)}
+
+/* ─── HUD ──────────────────────────────────────────────────────────────── */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:2;color:var(--bone);transition:opacity .3s}
+body:has(#settings[open]) #hud,body:has(#result:not([hidden])) #hud{opacity:.16}
+.vitals{position:absolute;left:var(--m);top:calc(var(--m)*.85);display:flex;flex-direction:column;align-items:flex-start}
+/* Distress that keeps the bar a bar: the mask is a solid band over the middle 56 % of the height (minus 6 px at each
+   end) ADDED to the erosion tile, so the fill stays continuous and only the top/bottom edges and the ends are bitten;
+   the stain overlay (::after) darkens the surface by up to 22 % with mottling and scratches, never cutting it. */
+.bar{position:relative;display:block;border:1px solid var(--iron);background:var(--track);
+ box-shadow:inset 0 0 0 1px #000000a0,0 0 0 1px #2a1d1466,0 2px 5px #000d;
+ mask-image:linear-gradient(#000 0 0),var(--erode);-webkit-mask-image:linear-gradient(#000 0 0),var(--erode);
+ mask-size:calc(100% - 12px) 56%,300px 300px;-webkit-mask-size:calc(100% - 12px) 56%,300px 300px;
+ mask-position:center,-70px 30px;-webkit-mask-position:center,-70px 30px;
+ mask-repeat:no-repeat,repeat;-webkit-mask-repeat:no-repeat,repeat;mask-composite:add;-webkit-mask-composite:source-over}
+.bar::after{content:'';position:absolute;inset:-1px;background:var(--stain) 0 0/220px 220px repeat;pointer-events:none}
+.bar>i,.bar>u{position:absolute;top:0;bottom:0;left:0;display:block;width:0}
+.bar>i{transition:width .13s linear;box-shadow:inset 0 1px 0 #00000070,inset 0 -1px 0 #000000a0;border-right:1px solid var(--ember)}
+.bar>u{transition:width .75s .3s cubic-bezier(.4,0,.2,1);background:var(--ash)}
+.health-bar{width:var(--hp-w);height:var(--hp-h)}
+.stamina-bar{width:var(--st-w);height:var(--st-h);margin-top:calc(var(--m)*.2);mask-size:calc(100% - 10px) 50%,260px 260px;-webkit-mask-size:calc(100% - 10px) 50%,260px 260px;mask-position:center,-20px 96px;-webkit-mask-position:center,-20px 96px}
+.stamina-bar::after{background-position:60px 40px}
+.boss-bar{width:var(--bs-w);height:var(--bs-h);mask-size:calc(100% - 14px) 56%,340px 340px;-webkit-mask-size:calc(100% - 14px) 56%,340px 340px;mask-position:center,40px 150px;-webkit-mask-position:center,40px 150px}
+.boss-bar::after{background-position:130px 90px}
+#hp,#boss-hp{background:linear-gradient(180deg,var(--blood-a),var(--blood-b))}
+#stamina{background:linear-gradient(180deg,var(--moss-a),var(--moss-b));border-right-color:#4d5a3c}
+#hud.low #hp{animation:failing 1.6s ease-in-out infinite}
+@keyframes failing{50%{opacity:.5}}
+
+.location{position:absolute;right:var(--m);top:calc(var(--m)*.9);text-align:right;font-size:calc(var(--fs-cap)*var(--hud-scale));line-height:1.35;
+ letter-spacing:.14em;color:var(--cap);text-shadow:var(--ink-shadow)}
+.location small{display:block;font-size:.92em;color:var(--hint);margin-top:.3em}
+
+.equipment{position:absolute;left:var(--m);bottom:calc(var(--m)*.45);display:flex;flex-direction:column;align-items:flex-start;gap:calc(var(--m)*.22)}
+.flask{position:relative;height:calc(var(--m)*1.4);padding-left:calc(var(--m)*1.05);display:flex;align-items:center}
+/* the draught is the old generated flask icon, desaturated to a dark thing glimpsed in a crypt */
+.flask::before{content:'';position:absolute;left:0;top:0;width:calc(var(--m)*.85);height:100%;background:url(../../assets/ui/flask.png) center/contain no-repeat;
+ filter:saturate(.3) brightness(.62) contrast(1.15) drop-shadow(0 2px 3px #000)}
+#flasks{font-family:'Vesper Figures',var(--hud-serif);font-size:calc(var(--fs-count)*.92*var(--hud-scale));line-height:1;font-weight:400;color:var(--bone-hi);text-shadow:var(--ink-shadow)}
+#hud.empty .flask::before{filter:saturate(0) brightness(.35) contrast(1.1) drop-shadow(0 2px 3px #000)}
+#hud.empty #flasks{color:var(--hint)}
+.use-key{display:flex;align-items:center;gap:.5em;}
+.use-key span{font-family:var(--hud-serif);font-variant:normal;letter-spacing:.06em;font-size:1.1em}
+.use-key{margin-left:calc(var(--m)*.02);font-family:var(--hud-sc);font-variant:var(--hud-scv);font-size:calc(var(--fs-hint)*1.05*var(--hud-scale));line-height:1;letter-spacing:.14em;color:var(--hint);text-shadow:1px 1px 0 #050403,0 0 5px #000}
+.use-key kbd{display:inline-grid;place-items:center;min-width:1.9em;height:1.9em;margin:0;padding:0 .35em;color:var(--cap);background:#070605d8;border:1px solid #57504a;
+ box-shadow:inset 0 -2px 0 #000c,inset 0 1px 0 #2a262133,0 2px 4px #000d;
+ mask-image:linear-gradient(#000000c0 0 0),var(--grunge);-webkit-mask-image:linear-gradient(#000000c0 0 0),var(--grunge);mask-size:100% 100%,90px 90px;-webkit-mask-size:100% 100%,90px 90px;
+ mask-repeat:no-repeat,repeat;-webkit-mask-repeat:no-repeat,repeat;mask-composite:add;-webkit-mask-composite:source-over}
+#hud.empty .use-key{opacity:.45}
+
+.boss-vitals{position:absolute;bottom:calc(var(--m)*1.45);/* clear of the one-row control hints in the corner */left:50%;transform:translateX(-50%);width:var(--bs-w);display:flex;flex-direction:column}
+.boss-head{position:relative;display:flex;justify-content:center;align-items:baseline;margin:0 0 calc(var(--m)*.16)}
+#boss-name{font-size:max(11px,calc(var(--fs-name)*.4*var(--hud-scale)));line-height:1;letter-spacing:.14em;color:var(--bone);text-shadow:var(--ink-shadow);
+ padding:14px 18px 4px;margin:-14px -18px -4px;
+ /* ink on rough paper, not missing glyphs: a 66 % base ADDED to the pit mask, so a pit only thins the ink by a third */
+ mask-image:linear-gradient(#000000c8 0 0),var(--grunge);-webkit-mask-image:linear-gradient(#000000c8 0 0),var(--grunge);
+ mask-size:100% 100%,300px 300px;-webkit-mask-size:100% 100%,300px 300px;mask-position:0 0,90px 240px;-webkit-mask-position:0 0,90px 240px;
+ mask-repeat:no-repeat,repeat;-webkit-mask-repeat:no-repeat,repeat;mask-composite:add;-webkit-mask-composite:source-over}
+
+.control-hint{position:absolute;right:calc(var(--m)*.6);bottom:calc(var(--m)*.45);display:flex;flex-wrap:nowrap;justify-content:flex-end;
+ font-size:max(9px,calc(var(--fs-hint)*.75*var(--hud-scale)));line-height:1.5;letter-spacing:.05em;color:var(--hint);text-shadow:1px 1px 0 #050403,0 0 5px #000}
+.control-hint b{font-weight:400;white-space:nowrap}
+.control-hint b:not(:last-child)::after{content:'·';margin:0 .6em;color:#2e2b27}
+kbd{display:inline;font-size:1em;letter-spacing:.04em;color:#5a5449;margin-right:.3em}
+
+#notice{position:absolute;top:21%;left:50%;transform:translateX(-50%);white-space:nowrap;text-align:center;
+ font-size:calc(var(--fs-notice)*var(--hud-scale));line-height:1;letter-spacing:.1em;text-indent:.1em;color:var(--bone);text-shadow:var(--ink-shadow);
+ opacity:0;transition:opacity .25s}
+#lock-mark{position:absolute;width:clamp(16px,1.5vw,36px);aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;color:#8a8272;
+ filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 2px #000)}
+#lock-mark svg{display:block;width:100%;height:100%}
+
+/* ─── result band ──────────────────────────────────────────────────────── */
+#result{position:fixed;left:0;right:0;top:50%;transform:translateY(-50%);z-index:4;text-align:center;
+ padding:clamp(40px,4vw,90px) 0 clamp(36px,3.6vw,80px);
+ background:linear-gradient(180deg,transparent 0%,#000000e8 14%,#000000f0 86%,transparent 100%);
+ animation:bleed 2.6s cubic-bezier(.2,.6,.2,1) both}
+@keyframes bleed{from{opacity:0;transform:translateY(-50%) scaleY(.3)}to{opacity:1;transform:translateY(-50%) scaleY(1)}}
+.result-inner{display:flex;flex-direction:column;align-items:center;padding:0 var(--m)}
+#result-overline{display:none}
+#result-title{font-size:calc(var(--fs-title)*var(--hud-scale));line-height:1;font-weight:400;letter-spacing:.14em;text-indent:.14em;margin:0;text-transform:uppercase;
+ color:var(--dried);text-shadow:1px 1px 0 #030202,0 0 10px #000,0 3px 18px #000;padding:8px 24px;
+ mask-image:linear-gradient(#00000080 0 0),var(--grunge);-webkit-mask-image:linear-gradient(#00000080 0 0),var(--grunge);
+ mask-size:100% 100%,360px 360px;-webkit-mask-size:100% 100%,360px 360px;mask-position:0 0,40px 10px;-webkit-mask-position:0 0,40px 10px;
+ mask-repeat:no-repeat,repeat;-webkit-mask-repeat:no-repeat,repeat;mask-composite:add;-webkit-mask-composite:source-over;
+ animation:ink 1.8s .5s both}
+@keyframes ink{from{opacity:0}to{opacity:1}}
+#result.victory #result-title{color:var(--bone-hi)}
+#result-detail{font-family:'Vesper Figures',var(--hud-serif);font-size:calc(var(--fs-cap)*1.1*var(--hud-scale));line-height:1.5;letter-spacing:.06em;color:var(--cap);margin:clamp(8px,.9vw,20px) 0 0;text-shadow:var(--ink-shadow);animation:ink 1.2s 1.4s both}
+#retry{margin-top:clamp(18px,1.7vw,40px);font-size:calc(var(--fs-cap)*1.05*var(--hud-scale));line-height:1;letter-spacing:.3em;text-indent:.3em;color:var(--cap);
+ padding:.6em 1.9em;border:1px solid var(--iron);background:#050403d0;text-shadow:var(--ink-shadow);transition:color .2s,border-color .2s;animation:ink 1.2s 2s both;
+ mask-image:linear-gradient(#000000b0 0 0),var(--grunge);-webkit-mask-image:linear-gradient(#000000b0 0 0),var(--grunge);mask-size:100% 100%,160px 160px;-webkit-mask-size:100% 100%,160px 160px;
+ mask-repeat:no-repeat,repeat;-webkit-mask-repeat:no-repeat,repeat;mask-composite:add;-webkit-mask-composite:source-over}
+#retry:hover{color:var(--bone-hi);border-color:var(--cap)}
+
+/* ─── pause band (the settings dialog) ─────────────────────────────────── */
+dialog#settings{position:fixed;left:0;right:0;top:50%;bottom:auto;transform:translateY(-50%);width:100%;max-width:none;max-height:94vh;overflow:auto;margin:0;
+ padding:clamp(16px,1.6vw,34px) 0 clamp(14px,1.4vw,30px);border:0;z-index:20;color:var(--cap);
+ background:linear-gradient(180deg,transparent 0%,#050403f2 3%,#050403f2 97%,transparent 100%);
+ scrollbar-width:thin;scrollbar-color:#2a2622 #050403}
+dialog#settings::before,dialog#settings::after{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--iron) 20%,var(--iron) 80%,transparent);
+ mask-image:var(--grunge);-webkit-mask-image:var(--grunge);mask-size:140px 140px;-webkit-mask-size:140px 140px}
+dialog#settings::before{top:3%}dialog#settings::after{bottom:3%}
+dialog::backdrop{background:#02020299}
+.settings-inner{position:relative;width:min(1000px,88vw);margin:0 auto}
+#settings h2{font-size:calc(var(--fs-name)*1.15*var(--hud-scale));line-height:1;font-weight:400;letter-spacing:.34em;margin:0 0 clamp(14px,1.5vw,28px);color:var(--bone);text-shadow:var(--ink-shadow)}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,72px)}
+#settings h3{font-size:calc(var(--fs-cap)*.9*var(--hud-scale));line-height:1;font-weight:400;letter-spacing:.3em;color:var(--hint);margin:0 0 clamp(8px,.8vw,14px);padding-bottom:.6em;border-bottom:1px solid #1f1c19}
+dl{display:grid;grid-template-columns:1fr 1.3fr;gap:0 clamp(10px,1vw,18px);margin:0;font-size:calc(var(--fs-cap)*1.05*var(--hud-scale));line-height:1.55;color:var(--hint)}
+dd{margin:0;color:var(--cap);letter-spacing:.02em}
+dialog label{display:block;font-family:var(--hud-sc);font-variant:var(--hud-scv);font-size:calc(var(--fs-cap)*var(--hud-scale));line-height:1;letter-spacing:.14em;color:var(--cap);margin-bottom:clamp(9px,.9vw,16px)}
+dialog select{display:block;width:100%;font:400 calc(var(--fs-cap)*1.05*var(--hud-scale))/1 var(--hud-serif);letter-spacing:.02em;margin-top:.5em;padding:.5em 2em .5em .6em;
+ color:#857b6a;border:1px solid var(--iron);-webkit-appearance:none;appearance:none;border-radius:0;background-color:#070605;
+ background-image:linear-gradient(45deg,transparent 50%,var(--cap) 50%),linear-gradient(135deg,var(--cap) 50%,transparent 50%);
+ background-repeat:no-repeat;background-size:5px 5px,5px 5px;background-position:calc(100% - 15px) center,calc(100% - 11px) center}
+dialog select:hover{border-color:var(--cap)}
+dialog input[type=range]{display:block;width:100%;height:14px;margin-top:.5em;background:transparent;-webkit-appearance:none;appearance:none}
+dialog input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--iron)}
+dialog input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:7px;height:7px;margin-top:-3px;background:var(--cap);border:0}
+.check{display:flex;align-items:center;gap:.6em}
+.check input{-webkit-appearance:none;appearance:none;margin:0;width:11px;height:11px;flex:none;background:transparent;border:1px solid var(--iron);transition:background .18s}
+.check input:checked{background:var(--cap);border-color:var(--cap)}
+.check input:hover{border-color:var(--cap)}
+.dialog-foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1em 2em;margin-top:clamp(12px,1.2vw,22px);padding-top:clamp(10px,1vw,18px);border-top:1px solid #1f1c19;
+ font-size:calc(var(--fs-cap)*1.05*var(--hud-scale));line-height:1;letter-spacing:.22em}
+.dialog-actions{display:flex;gap:2.2em}
+.dialog-foot button,.dialog-foot a{background:none;border:0;padding:0;color:var(--cap);text-decoration:none;text-shadow:var(--ink-shadow);transition:color .2s}
+#resume{color:var(--bone)}
+.dialog-foot button:hover,.dialog-foot a:hover{color:var(--bone-hi)}
+.close{position:absolute;right:0;top:-.3em;font:400 calc(var(--fs-name)*.8*var(--hud-scale))/1 var(--hud-serif);color:var(--hint);transition:color .2s;background:none;border:0}
+.close:hover{color:var(--bone)}
+
+#telemetry{position:fixed;left:16px;top:calc(var(--m)*.85 + var(--hp-h)*6);font:11px/1.55 ui-monospace,monospace;
+ white-space:pre;background:#071016e8;color:#aad1be;padding:10px 12px;border:1px solid #1d3a33;pointer-events:none;z-index:12}
+
+@media(max-width:860px){
+ :root{--hp-w:clamp(150px,30vw,260px);--st-w:clamp(128px,25vw,220px);--bs-w:min(64vw,420px)}
+ .location{display:none}
+ .settings-grid{grid-template-columns:1fr}
+ .control-hint{display:none}
+}
+/* Short viewports (720p and laptop panels): keep the pause band inside one screen. */
+@media(max-height:880px){
+ dialog#settings{padding:clamp(16px,1.8vw,34px) 0 clamp(14px,1.5vw,30px)}
+ dl{line-height:1.45}
+ dialog label{margin-bottom:7px}
+ .dialog-foot{margin-top:10px;padding-top:8px}
+}

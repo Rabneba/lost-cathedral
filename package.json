@@ -1,0 +1,20 @@
+{
+  "name": "soulslike-g-astra2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "verify": "node scripts/verify-current-build.mjs",
+    "dev": "vite --host 127.0.0.1",
+    "build": "node scripts/build-preview-registry.mjs && vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "@genex-ai/cli-demo": "^1.32.3",
+    "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "@genex-ai/embed-sdk": "^0.22.3",
+    "three": "^0.186.0"
+  }
+}

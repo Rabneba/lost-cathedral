@@ -1,0 +1,2 @@
+import bpy,sys,os,json
+bpy.ops.wm.read_factory_settings(use_empty=True);bpy.ops.import_scene.gltf(filepath=os.path.abspath(sys.argv[-1]));rig=next(o for o in bpy.context.scene.objects if o.type=='ARMATURE');print('ACTIONS',[(a.name,list(a.frame_range),[(s.identifier,s.target_id_type) for s in a.slots]) for a in bpy.data.actions]);print('NLA',[(t.name,[(s.name,s.action.name)for s in t.strips])for t in rig.animation_data.nla_tracks]);print('RIG',rig.name)

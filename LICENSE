@@ -1,0 +1,21 @@
+Lost Cathedral - source-available licence
+
+Copyright (c) 2026 Rab Neba. All rights reserved.
+
+This repository is published so that people can read the code, learn from it and run the game locally.
+It is not open source and is not offered under the MIT licence or any other permissive licence.
+
+You may:
+- view, download, build and run the code and assets on your own machine;
+- study and modify them for your own private, non-commercial use.
+
+You may not, without written permission from the copyright holder:
+- redistribute, sublicense, sell or host the code or the assets, in original or modified form;
+- use the assets (models, textures, animations, images, sounds, music) in another project or product;
+- present the work, or a derivative of it, as your own.
+
+Third-party components keep their own licences: Three.js and Vite (MIT) and the other packages listed in
+package.json; the fonts under assets/fonts are Google Fonts released under the SIL Open Font License.
+Generated assets were produced with Genex Tools (https://genex.games) under its terms of service.
+
+THE SOFTWARE AND ASSETS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.

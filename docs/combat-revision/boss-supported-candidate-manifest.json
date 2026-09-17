@@ -1,0 +1,116 @@
+{
+  "asset": "assets/combat-revision/boss/boss-combat-supported-review.glb",
+  "characterId": "cmu1gedz204a32pnwb9ti93xn",
+  "rigProvider": "Uthana, preserved approved mesh and bind",
+  "locomotionSpeed": 0.45,
+  "approachDistance": 2.4615384615384617,
+  "attackRange": 2.576923076923077,
+  "phaseTwoSpeedMultiplier": 1.08,
+  "attackSequence": [
+    "sweep",
+    "slam"
+  ],
+  "phaseTwoAttackSequence": [
+    "sweep",
+    "slam",
+    "sweep"
+  ],
+  "weaponSegment": [
+    [
+      0.2,
+      2.79,
+      -0.29
+    ],
+    [
+      0.825,
+      2.39,
+      -0.315
+    ]
+  ],
+  "clips": {
+    "idle": {
+      "duration": 26.2666667,
+      "rate": 1,
+      "blendIn": 0.25,
+      "source": "approved five-degree forward lean; quarter-speed pacing baked"
+    },
+    "walk-forward": {
+      "duration": 3.9333333,
+      "sourceSpeed": 0.4094329,
+      "blendIn": 0.28,
+      "source": "approved combat-advance video via Uthana mxLm1X2ijEuU; Blender posture, contact and stride cleanup",
+      "footPhaseOffsets": {
+        "Left": 0.115,
+        "Right": 0.615
+      },
+      "stanceFraction": 0.62
+    },
+    "sweep": {
+      "duration": 4.4,
+      "windup": 1.85,
+      "active": 0.3999999999999999,
+      "recovery": 2.1500000000000004,
+      "hitWindows": [
+        [
+          1.85,
+          2.25
+        ]
+      ],
+      "blendIn": 0.12,
+      "source": "Uthana mVaw5R3TuLmP captured sweep; actual curved-haft grip, preserved arm hinge, deliberate regrips and planted leading foot",
+      "engagementRange": [
+        1.0769230769230769,
+        1.6538461538461537
+      ],
+      "preferredDistance": 1.3076923076923077
+    },
+    "slam": {
+      "duration": 4.9,
+      "windup": 2.1358953231071784,
+      "active": 0.2211550146526151,
+      "recovery": 2.542949662240207,
+      "hitWindows": [
+        [
+          2.1358953231071784,
+          2.3570503377597936
+        ]
+      ],
+      "blendIn": 0.14,
+      "source": "Uthana mnJ1oEhWNc9m captured strike; bounded palm regrips, preserved arm hinge, supported boots and clear recovery backstep",
+      "engagementRange": [
+        2.3846153846153846,
+        2.576923076923077
+      ],
+      "preferredDistance": 2.4615384615384617
+    },
+    "hit": {
+      "duration": 0.6,
+      "blendIn": 0.08,
+      "source": "authored support pose on approved rig"
+    },
+    "awaken": {
+      "duration": 2.6,
+      "blendIn": 0.25,
+      "source": "authored support pose on approved rig"
+    },
+    "death": {
+      "duration": 3.6,
+      "blendIn": 0.18,
+      "source": "authored kneeling collapse on approved rig"
+    }
+  },
+  "gripCalibration": {
+    "socketAxis": "local +Z",
+    "idleAnchors": {
+      "Right": 0.6,
+      "Left": 1.55
+    },
+    "slam": "Primary hand anchored; secondary releases in preparation/recovery. See boss-v75-release-events.json. V78 changes only legs.",
+    "sweep": "Measured curved haft at dominant station1.9; netshaftroll\u2212145\u00b0 and wholebodyaim+15\u00b0 baked before foot plants. Both hands held source51\u201396.",
+    "sourceMeshesPreserved": true
+  },
+  "facingCalibrationDegrees": -50,
+  "sha256": "a2d1f13c0086bd95c3912fc480da192bd35a3630b63f61710a134736b7db0cbf",
+  "status": "Combined candidate; final game-speed checks in progress",
+  "provenance": "docs/combat-revision/supported-combat-selection.json"
+}
