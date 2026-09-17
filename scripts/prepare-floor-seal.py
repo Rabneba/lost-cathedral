@@ -18,6 +18,10 @@ p.add_argument('--key', type=float, default=34, help='luminance (0-255) at and u
 p.add_argument('--soft', type=float, default=26, help='luminance ramp width above --key')
 p.add_argument('--size', type=int, default=2048)
 p.add_argument('--margin', type=float, default=.02)
+p.add_argument('--outer', type=float, default=0, help='keep only the band OUTSIDE this radius fraction (0 keeps everything)')
+p.add_argument('--centre', type=float, default=0, help='with --outer: also keep the emblem INSIDE this radius fraction')
+p.add_argument('--ring', default='', help='with --outer: also keep a band r0,r1 (fractions), e.g. .325,.395')
+p.add_argument('--desaturate', type=float, default=0, help='0..1: pull the colour toward its luminance (dark iron instead of brass)')
 a = p.parse_args()
 
 im = Image.open(a.src).convert('RGBA')
@@ -49,6 +53,24 @@ blur_rgb = np.asarray(Image.fromarray((canvas_rgb * w).astype(np.uint8)).filter(
 blur_a = np.asarray(Image.fromarray((canvas_a * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(6))).astype(np.float64) / 255.
 spread = blur_rgb / np.maximum(blur_a[..., None], 1e-3)
 fixed = np.where(canvas_a[..., None] > .85, canvas_rgb, spread)
+# Minimalist cut (17 Sep, second pass): keep the outer band and, optionally, a small central emblem; the rest
+# of the tracery goes so the flagstones stay open. Soft 1.5 % feathers so no ring edge is a hard circle.
+if a.outer > 0:
+    h, w = canvas_a.shape
+    yy, xx = np.mgrid[0:h, 0:w]
+    r = np.hypot((xx - (w - 1) / 2) / (w / 2), (yy - (h - 1) / 2) / (h / 2))
+    feather = .015
+    keep = np.clip((r - a.outer) / feather + .5, 0, 1)
+    if a.centre > 0:
+        keep = np.maximum(keep, np.clip((a.centre - r) / feather + .5, 0, 1))
+    if a.ring:
+        r0, r1 = [float(x) for x in a.ring.split(',')]
+        band = np.minimum(np.clip((r - r0) / feather + .5, 0, 1), np.clip((r1 - r) / feather + .5, 0, 1))
+        keep = np.maximum(keep, band)
+    canvas_a = canvas_a * keep
+if a.desaturate > 0:
+    lum = (fixed @ np.array([.2126, .7152, .0722]))[..., None]
+    fixed = fixed * (1 - a.desaturate) + lum * a.desaturate
 out = np.dstack([np.clip(fixed, 0, 255), np.clip(canvas_a * 255, 0, 255)]).astype(np.uint8)
 result = Image.fromarray(out, 'RGBA').resize((a.size, a.size), Image.LANCZOS)
 result.save(a.out)

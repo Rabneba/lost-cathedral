@@ -480,10 +480,10 @@ export async function buildArena(scene,texturePaths={}){
  let seal=null;
  if(sealTexture){
   const sealGeometry=new T.CircleGeometry(5.3,96);sealGeometry.rotateX(-Math.PI/2);
-  const sealMat=new T.MeshStandardMaterial({map:sealTexture,normalMap:sealNormal||null,normalScale:new T.Vector2(.9,.9),alphaTest:.4,roughness:.58,metalness:.6,color:0xb8a98c,emissive:new T.Color(0xff5a1e),emissiveMap:sealTexture,emissiveIntensity:0,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2});
+  const sealMat=new T.MeshStandardMaterial({map:sealTexture,normalMap:sealNormal||null,normalScale:new T.Vector2(.9,.9),alphaTest:.4,roughness:.40,metalness:.78,color:0x8e9298,emissive:new T.Color(0xff4a16),emissiveMap:sealTexture,emissiveIntensity:0,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2});
   seal=new T.Mesh(sealGeometry,sealMat);seal.position.set(0,.012,-3);seal.name='floor seal';seal.castShadow=false;seal.receiveShadow=true;seal.renderOrder=0;root.add(seal);
  }
- let sealHeatTarget=.12,sealHeatNow=0;
+ let sealHeatTarget=.03,sealHeatNow=0;
  for(const sx of [-1,1])for(const xx of [4.7,7,9.3,11.6]){arch(sx*xx,-19.4,1.65,4.2,2.8,0,.09);cyl(sx*(xx-.9),2.3,-19.4,.09,4.6,carved,8);cyl(sx*(xx+.9),2.3,-19.4,.09,4.6,carved,8);}
  // The west end had nothing at all on the two big flanking walls, so the whole
  // return view was a grey field with a door in it. Same blind register as the
@@ -1126,7 +1126,9 @@ export async function buildArena(scene,texturePaths={}){
   /** 0..1: how much the seal's inlay smoulders (main.js: .12 at the start of a fight, 1 from the phase change). */
   sealHeat(value){sealHeatTarget=Math.max(0,Math.min(1,Number.isFinite(value)?value:0));},
   update(time,camera){
-   if(seal){sealHeatNow+=(sealHeatTarget-sealHeatNow)*.03;seal.material.emissiveIntensity=sealHeatNow*(.30+.18*Math.sin(time*1.1)+.06*Math.sin(time*3.7));}doorFogMat.uniforms.time.value=time;updateFlames(time);beamMat.uniforms.time.value=time;skyMat.uniforms.time.value=time;banners?.update(time);
+   // Second pass (user: the brass stood out too much): dark polished iron, near the basalt's own tone, read by
+   // gloss and relief; almost no smoulder at rest, a low ember pulse in phase two.
+   if(seal){sealHeatNow+=(sealHeatTarget-sealHeatNow)*.03;seal.material.emissiveIntensity=sealHeatNow*(.20+.10*Math.sin(time*1.1)+.04*Math.sin(time*3.7));}doorFogMat.uniforms.time.value=time;updateFlames(time);beamMat.uniforms.time.value=time;skyMat.uniforms.time.value=time;banners?.update(time);
   // Cloud crossing the moon: the rose projection breathes instead of sitting flat.
   rose.intensity=roseBase*(.72+.28*(.5+.5*Math.sin(time*.31)+.18*Math.sin(time*.77)));
   camera.getWorldDirection(fillForward);
