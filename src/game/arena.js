@@ -1,5 +1,6 @@
 import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {capTexture,capObjectTextures} from './texture-budget.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {weatherStone,floorStyleUniforms,FLOOR_STYLES,scaleStoneUV,vaultSection,archSpandrel,pointedGateShape} from './stone-weathering.js';
 import {cathedralGlass} from './cathedral-glass.js';
@@ -94,6 +95,10 @@ export async function buildArena(scene,texturePaths={}){
  // roughness in alpha) and the floor's own set is the grey flagstone; the
  // chequer and tomb sets are blended in by stone-weathering.js (floor zones).
  texturePaths={...texturePaths,stone:{map:ASSETS.cathedralWall,normalMap:ASSETS.wallAshlarNR},floor:{map:ASSETS.floorFlagstoneGrey,normalMap:ASSETS.floorFlagstoneGreyNR}};
+ // Touch (17 Sep 2026): main.js passes shadowScale (.5 on a phone: the moon's 3072 map becomes 1536, the cookie spots
+ // halve) and textureCap (1024: the monument's 4096 maps and the 2048 seal are shrunk before their first upload,
+ // texture-budget.js). Both default to what shipped.
+ const shadowScale=texturePaths.shadowScale??1,textureCap=texturePaths.textureCap??0;
  const root=new T.Group();root.name='Cathedral of the Last Rite';scene.add(root);
  const loader=new T.TextureLoader();
  const cameraColliders=[];
@@ -181,11 +186,12 @@ export async function buildArena(scene,texturePaths={}){
   loader.loadAsync(ASSETS.cathedralMetal).catch(()=>null),
   loader.loadAsync(ASSETS.debrisAtlas).catch(()=>null),
   loader.loadAsync(ASSETS.floorDamageAtlas).catch(()=>null),
-  loader.loadAsync(ASSETS.floorSeal).catch(()=>null),
-  loader.loadAsync(ASSETS.floorSealNR).catch(()=>null),
+  loader.loadAsync(texturePaths.floorSeal??ASSETS.floorSeal).catch(()=>null),
+  loader.loadAsync(texturePaths.floorSealNR??ASSETS.floorSealNR).catch(()=>null),
  ]);
  if(sealTexture){sealTexture.colorSpace=T.SRGBColorSpace;sealTexture.anisotropy=8;}
  if(sealNormal){sealNormal.anisotropy=4;}
+ if(textureCap)await Promise.all([sealTexture,sealNormal].filter(Boolean).map(texture=>capTexture(texture,textureCap)));
  if(debrisTexture){debrisTexture.colorSpace=T.SRGBColorSpace;debrisTexture.anisotropy=8;}
  if(damageTexture){damageTexture.colorSpace=T.SRGBColorSpace;damageTexture.anisotropy=8;}
  // T4, the tarnished brass and wrought iron tiling map, was generated last
@@ -501,9 +507,10 @@ export async function buildArena(scene,texturePaths={}){
  // door's shoulders. Same closure as the apse.
  box(0,6.4,20.74,7.9,13.4,.55,masonry);
  const [monument,monumentLow]=await Promise.all([
-  new GLTFLoader().loadAsync(new URL('../../assets/a-single-weathered-gothic-cathedral-fune-cmu1gsre.glb',import.meta.url).href),
-  new GLTFLoader().loadAsync(new URL('../../assets/environment-lod/funerary-monument-lod.glb',import.meta.url).href),
+  new GLTFLoader().loadAsync(texturePaths.monument??new URL('../../assets/a-single-weathered-gothic-cathedral-fune-cmu1gsre.glb',import.meta.url).href),
+  new GLTFLoader().loadAsync(texturePaths.monumentLod??new URL('../../assets/environment-lod/funerary-monument-lod.glb',import.meta.url).href),
  ]);
+ if(textureCap)await Promise.all([monument.scene,monumentLow.scene].map(model=>capObjectTextures(model,textureCap)));
  const model=monument.scene;model.rotation.y=-Math.PI/2;model.updateMatrixWorld(true);const bounds=new T.Box3().setFromObject(model),sz=bounds.getSize(v(0,0,0));model.scale.multiplyScalar(3.7/sz.y);model.updateMatrixWorld(true);bounds.setFromObject(model);const cc=bounds.getCenter(v(0,0,0));model.position.set(-cc.x,-bounds.min.y,-cc.z);model.traverse(n=>{if(n.isMesh){n.castShadow=true;n.receiveShadow=true;n.material.color.multiplyScalar(.58);n.material.roughness=1;}});
  const lowModel=monumentLow.scene;lowModel.rotation.y=-Math.PI/2;lowModel.updateMatrixWorld(true);
  const lowBounds=new T.Box3().setFromObject(lowModel),lowSize=lowBounds.getSize(v(0,0,0));lowModel.scale.multiplyScalar(3.7/lowSize.y);lowModel.updateMatrixWorld(true);lowBounds.setFromObject(lowModel);const lowCenter=lowBounds.getCenter(v(0,0,0));lowModel.position.set(-lowCenter.x,-lowBounds.min.y,-lowCenter.z);
@@ -552,7 +559,10 @@ export async function buildArena(scene,texturePaths={}){
  // Changing the light COUNT would re-hash three's lights state and recompile
  // every shader mid-fight, so the pool size never varies.
  const flames=[],lights=[],emitters=[];
- const LIGHT_POOL=9;
+ // Touch (17 Sep 2026, the user's pick): a phone pools 4 candle lights instead of 9, keeps 3 of the 5 vault uplights
+ // and the effect flashes stay off (main.js), so a pixel evaluates 18 lights instead of 28; the cookie spots keep
+ // their projection but cast no shadow there (three r186 refreshes a mapped spot's matrix itself, WebGLLights.js).
+ const LIGHT_POOL=texturePaths.lightPool??9,lightBudget=!!texturePaths.lightBudget;
  const addEmitter=(x,y,z,color=0xffb16b,intensity=16,distance=5.5,weight=1)=>{emitters.push({position:v(x,y,z),color:new T.Color(color),intensity,distance,weight,phase:emitters.length*1.91});return emitters.length-1;};
  const wax=new T.MeshStandardMaterial({color:0xa89775,roughness:.9});
  const fireMat=new T.MeshBasicMaterial({color:0xffffff,vertexColors:true});
@@ -831,7 +841,7 @@ export async function buildArena(scene,texturePaths={}){
  // light's own axes (x +-13.6, y 0-18, z +-21 gives u +-24.5, v -21.2..27.1),
  // and the near plane goes NEGATIVE so the vault over the apse - which sits
  // behind the light plane - still casts.
- const moon=new T.DirectionalLight(0xc9dfec,2.0);moon.position.set(-8,17,-8);moon.target.position.set(3,0,3);moon.castShadow=true;moon.shadow.mapSize.set(3072,3072);Object.assign(moon.shadow.camera,{left:-25.5,right:25.5,top:28,bottom:-22,near:-15,far:62});moon.shadow.bias=-.00035;moon.shadow.normalBias=.03;moon.shadow.radius=3;scene.add(moon,moon.target);
+ const moon=new T.DirectionalLight(0xc9dfec,2.0);moon.position.set(-8,17,-8);moon.target.position.set(3,0,3);moon.castShadow=true;moon.shadow.mapSize.set(Math.round(3072*shadowScale),Math.round(3072*shadowScale));Object.assign(moon.shadow.camera,{left:-25.5,right:25.5,top:28,bottom:-22,near:-15,far:62});moon.shadow.bias=-.00035;moon.shadow.normalBias=.03;moon.shadow.radius=3;scene.add(moon,moon.target);
  // This sat 1.5 m in front of the apse spandrel at 18 intensity, so inverse
  // square blew the middle of that wall into a flat white panel behind the boss.
  // Low and warm, tucked behind the votive bank: it lifts the boss's back and
@@ -867,7 +877,7 @@ export async function buildArena(scene,texturePaths={}){
  // cone reaches the springing rather than only the ridge. castShadow stays
  // false and every one is still created here, during the loading screen, so
  // three's lights state is never re-hashed mid-fight.
- for(const [z,y,intensity] of [[-17.5,7.9,23],[-6,7.25,26],[0,7.25,26],[6,7.25,26],[12,7.25,20]]){
+ for(const [z,y,intensity] of [[-17.5,7.9,23],[-6,7.25,26],[0,7.25,26],[6,7.25,26],[12,7.25,20]].filter(([z])=>!lightBudget||Math.abs(z)<=6)){
   const up=new T.SpotLight(0xffa765,intensity,15.5,.95,1,1.3);
   up.castShadow=false;up.name='vault uplight';
   up.position.set(0,y,z);up.target.position.set(0,17.2,z);
@@ -888,7 +898,7 @@ export async function buildArena(scene,texturePaths={}){
   const spot=new T.SpotLight(color,intensity,distance,angle,penumbra,1);
   spot.position.set(...position);spot.target.position.set(...target);
   if(map)spot.map=map;
-  spot.castShadow=true;spot.shadow.mapSize.set(size,size);
+  spot.castShadow=!lightBudget;const mapSize=Math.max(256,Math.round(size*shadowScale));spot.shadow.mapSize.set(mapSize,mapSize);
   spot.shadow.camera.near=2;spot.shadow.camera.far=40;spot.shadow.bias=-.0004;spot.shadow.normalBias=.04;
   spot.shadow.autoUpdate=false;spot.shadow.needsUpdate=true;
   scene.add(spot,spot.target);spots.push(spot);return spot;

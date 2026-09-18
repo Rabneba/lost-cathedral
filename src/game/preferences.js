@@ -6,8 +6,8 @@ const LEGACY_BRIGHTNESS=[1.12,1.24];
 const DEFAULTS={quality:'high',floor:'basalt','music-track':'cathedral',brightness:1.36,'music-volume':.2,'effects-volume':.6,'toggle-movement':false,'toggle-shield':false,'show-stats':false};
 const RANGES={brightness:[.7,1.7],'music-volume':[0,1],'effects-volume':[0,1]};
 
-export function sanitizePreferences(value){
- const result={...DEFAULTS};
+export function sanitizePreferences(value,defaults={}){
+ const result={...DEFAULTS,...defaults};
  if(!value||typeof value!=='object')return result;
  if(['high','balanced','low'].includes(value.quality))result.quality=value.quality;
  if(['chequer','basalt','marble'].includes(value.floor))result.floor=value.floor;
@@ -20,10 +20,11 @@ export function sanitizePreferences(value){
  return result;
 }
 
-export function initializePreferences(handlers){
+/** `defaults` overrides DEFAULTS for this device (the touch path starts at Performance, the user's call on 17 Sep 2026); a saved profile still wins. */
+export function initializePreferences(handlers,{defaults={}}={}){
  let storage,saved;
  try{storage=localStorage;saved=JSON.parse(storage.getItem(KEY));}catch{/* Private or blocked storage keeps the defaults. */}
- const preferences=sanitizePreferences(saved);
+ const preferences=sanitizePreferences(saved,defaults);
  for(const [id,value]of Object.entries(preferences)){
   const element=document.getElementById(id),checkbox=typeof value==='boolean';
   if(!element)continue;
@@ -31,7 +32,7 @@ export function initializePreferences(handlers){
   handlers[id]?.(value);
   element.addEventListener(checkbox||['quality','floor','music-track'].includes(id)?'change':'input',()=>{
    const input=checkbox?element.checked:['quality','floor','music-track'].includes(id)?element.value:Number(element.value);
-   const cleaned=sanitizePreferences({...preferences,[id]:input});Object.assign(preferences,cleaned);
+   const cleaned=sanitizePreferences({...preferences,[id]:input},defaults);Object.assign(preferences,cleaned);
    handlers[id]?.(preferences[id]);
    try{storage?.setItem(KEY,JSON.stringify(preferences));}catch{/* Playback still works when storage is unavailable. */}
   });

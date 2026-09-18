@@ -7,6 +7,7 @@ import {ShaderPass} from 'three/addons/postprocessing/ShaderPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
 import {Pass,FullScreenQuad} from 'three/addons/postprocessing/Pass.js';
 import {createPuddles} from './puddles.js';
+import {pixelRatioFor} from './device.js';
 
 // AgX keeps a candle flame orange instead of bleaching it to cream the way ACES
 // does, but it is a darker curve. The gain is absorbed here so main.js's
@@ -251,7 +252,7 @@ class CathedralBloom extends Pass{
  }
 }
 
-export function createRendering(canvas) {
+export function createRendering(canvas,{touch=false}={}) {
  // 1.15 retains supersampling with 4x MSAA + SMAA and leaves more headroom
  // for active combat than the previous 1.25 scale. Contact AO remains enabled.
  const renderer=new T.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
@@ -396,9 +397,15 @@ export function createRendering(canvas) {
    c+=grain*(1.-smoothstep(0.,.42,grainLuma));
    gl_FragColor=vec4(c+(bayer4(gl_FragCoord.xy)-.5)/255.,1.);}`});
  composer.addPass(dither);
- function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);composer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();grade.uniforms.uAspect.value=w/h;}
+ // Touch (17 Sep 2026, the mobile pass): on a phone or a tablet the pixel ratio comes from a pixel budget per preset
+ // instead of the desktop caps (device.js pixelRatioFor) and is recomputed on every resize (a rotation changes the
+ // viewport); contact AO is never on, the puddle mirror only at High (at the Balanced size), the dither only at High.
+ // On the desktop every number below is exactly what shipped.
+ let currentMode='high';
+ const ratioFor=mode=>pixelRatioFor({mode,touch,dpr:devicePixelRatio,width:innerWidth,height:innerHeight});
+ function resize(){const w=innerWidth,h=innerHeight;if(touch){const ratio=ratioFor(currentMode);renderer.setPixelRatio(ratio);composer.setPixelRatio(ratio);}renderer.setSize(w,h,false);composer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();grade.uniforms.uAspect.value=w/h;}
  addEventListener('resize',resize);resize();
- function quality(mode){puddles.quality(mode);const ratio=mode==='high'?Math.min(devicePixelRatio,1.15):mode==='balanced'?1:.8;renderer.setPixelRatio(ratio);composer.setPixelRatio(ratio);bloom.enabled=mode!=='low';ao.enabled=mode==='high';aa.enabled=true;dither.enabled=mode!=='low';resize();}
+ function quality(mode){currentMode=mode;puddles.quality(touch?(mode==='high'?'balanced':'low'):mode);const ratio=ratioFor(mode);renderer.setPixelRatio(ratio);composer.setPixelRatio(ratio);bloom.enabled=mode!=='low';ao.enabled=mode==='high'&&!touch;aa.enabled=touch?mode!=='low':true;/* Performance on a phone: MSAA alone, no SMAA passes */dither.enabled=touch?mode==='high':mode!=='low';resize();}
  renderer.info.autoReset=false;
  // Optimization pass (16 Sep): the boss's slam and burst effects are hidden until
  // first used, so their shaders compiled mid-fight - three 125-132 ms freezes in
@@ -436,6 +443,6 @@ export function createRendering(canvas) {
    const shadowAuto=renderer.shadowMap.autoUpdate,mirrored=puddles.renderMirror(renderer,scene,camera);
    if(mirrored)renderer.shadowMap.autoUpdate=false;
    try{composer.render();}finally{renderer.shadowMap.autoUpdate=shadowAuto;}}
- return{renderer,scene,camera,composer,bloom,ao,puddles,quality,warm,post,
+ return{renderer,scene,camera,composer,bloom,ao,puddles,quality,warm,post,touch,
   render:()=>render()};
 }

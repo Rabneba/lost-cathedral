@@ -68,8 +68,8 @@ export function cathedralImpulse(context){
 }
 
 export class GameAudio{
- constructor(paths){
-  this.paths=paths;this.music=new Audio(paths.music);this.music.loop=true;this.music.volume=.21;
+ constructor(paths,{routeMusic=false}={}){
+  this.paths=paths;this.music=new Audio(paths.music);this.music.loop=true;this.music.volume=.21;this.routeMusic=routeMusic;this.musicLevel=.21;this.musicGain=null;
   this.volume=.6;this.enabled=false;this.suspended=false;this.pool=new Set();this.buffers=new Map();
   this.listener={x:0,z:0,yaw:0};this.context=null;this.initializing=null;this.lastTake=new Map();this.takeGains=new Map();
   // Fetch once, decode after the first user gesture; browsers can keep audio locked before that.
@@ -84,6 +84,7 @@ export class GameAudio{
   try{
    const context=this.context=new AudioContext({latencyHint:'interactive'});
    this.master=context.createGain();this.master.gain.value=this.volume;this.master.connect(context.destination);
+   if(this.routeMusic)this.attachMusic(context);
    this.room=context.createConvolver();this.room.buffer=cathedralImpulse(context);
    const low=context.createBiquadFilter(),high=context.createBiquadFilter(),wet=context.createGain();
    low.type='lowpass';low.frequency.value=4200;high.type='highpass';high.frequency.value=220;wet.gain.value=.14;
@@ -100,13 +101,20 @@ export class GameAudio{
   }
   return this.initializing;
  }
+ /** Phones (17 Sep 2026): iOS ignores an <audio> element's volume (it is always 1), so on the touch path the music
+  * element is routed through the context and its level lives on a gain node; the Music slider then works on an
+  * iPhone too. The desktop keeps the element's own volume. */
+ attachMusic(context){
+  try{this.musicSource=context.createMediaElementSource(this.music);this.musicGain=context.createGain();this.musicGain.gain.value=this.musicLevel;this.musicSource.connect(this.musicGain);this.musicGain.connect(context.destination);this.music.volume=1;}
+  catch{this.musicGain=null;}
+ }
  start(){this.enabled=true;this.suspended=false;this.initialize();this.context?.resume().catch(()=>{});this.music.play().catch(()=>{});}
  pause(){this.suspended=true;this.music.pause();this.clear();this.context?.suspend().catch(()=>{});}
  resume(){if(this.enabled){this.suspended=false;this.context?.resume().catch(()=>{});this.music.play().catch(()=>{});}}
  setListener(position,yaw){this.listener={x:position.x,z:position.z,yaw};}
  /** Swap the looping track (pause menu, Music track). preview plays it even while the game is paused so it can be heard. */
  setTrack(url,{preview=false}={}){if(!url)return;const next=new URL(url,location.href).href;if(this.music.src===next)return;const playing=!this.music.paused;this.music.src=next;this.music.load();if(playing||(preview&&this.enabled))this.music.play().catch(()=>{});}
- setMusic(value){this.music.volume=clamp(value,0,1)*.375;/* 25 % under round 2 (user, 16 Sep) */}
+ setMusic(value){this.musicLevel=clamp(value,0,1)*.375;/* 25 % under round 2 (user, 16 Sep) */if(this.musicGain){this.musicGain.gain.value=this.musicLevel;this.music.volume=1;}else this.music.volume=this.musicLevel;}
  setSfx(value){this.volume=clamp(value,0,1);this.master?.gain.setTargetAtTime(this.volume,this.context.currentTime,.015);}
  status(){return`${this.context?.state==='running'?'Spatial audio':this.suspended?'Audio paused':'Audio ready'} · ${this.buffers.size}/${SOUNDS.length} sounds · ${this.pool.size} voices`;}
  play(name,gain=1,position){

@@ -202,7 +202,7 @@ export function createWeaponFire(weapon,segment,{scene,boss=true,embers=boss?96:
  points.frustumCulled=false;points.renderOrder=7;points.userData.cosmetic=true;points.userData.noPuddleReflection=true;
  (scene||weapon).add(points);
 
- const light=new T.PointLight(0xff5a1e,0,boss?6.5:3.4,decay);light.userData.cosmetic=true;(scene||weapon).add(light);
+ const light=new T.PointLight(0xff5a1e,0,boss?6.5:3.4,decay);light.userData.cosmetic=true;light.userData.weaponLight=true;/* kept on phones (main.js) */(scene||weapon).add(light);
 
  // Incandescent metal: distance to the blade's spine is evaluated per vertex in
  // each mesh's own frame, so only the cutting steel glows — never the haft — and a

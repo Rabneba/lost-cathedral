@@ -22,7 +22,7 @@ npm run build
 npm run preview -- --port 4174
 ```
 
-Open http://127.0.0.1:4174/. Desktop keyboard and mouse; WebGL 2 required.
+Open http://127.0.0.1:4174/. Keyboard and mouse on the desktop, touch controls on phones and tablets; WebGL 2 required.
 
 | Action | Control |
 |---|---|
@@ -35,6 +35,8 @@ Open http://127.0.0.1:4174/. Desktop keyboard and mouse; WebGL 2 required.
 | Free camera | Release lock, then drag; double-click captures mouse |
 | Camera distance | Mouse wheel |
 | Pause, graphics, audio, controls | Escape |
+
+On a phone or a tablet the game takes its own path (v1.1.0, `src/game/device.js`): a floating stick on the left, drag to look and pinch to zoom on the right, and Strike (tap, tap again to combo, hold for heavy), Roll, Guard, Draught, Lock and Pause buttons; a lighter rendering preset (Performance by default, a pixel budget instead of the desktop's ratios, no contact AO, no puddle mirror below High, half-size shadow maps, 18 lights per pixel instead of 28, no SMAA at Performance) and phone copies of the six heavy models with their 4096-px maps resized to 1024 (`assets/mobile/`, made by `scripts/make-mobile-assets.py`; mesh, rig and clips identical) so the load fits a phone's memory. The desktop rendering is untouched; `?touch=1` shows the touch layer on a desktop. Notes: `docs/mobile-2026-09-17/README.md`.
 
 Settings include movement and shield toggles for users who prefer pressing once over holding keys. Release your shield during recovery to regenerate stamina faster. Both phases have deliberate windups, committed attacks and punish windows. Retry is available after either outcome.
 
@@ -71,4 +73,4 @@ Current motion notes and rebuild entry points:
 - [Why the earlier motion looked wrong](docs/motion-corrections-explained.md) explains the causes, corrections and remaining limits.
 - Graphics and cloth: `docs/environment-cloth-pass.md`; recessed hood smoke and reflective puddles: `docs/hood-and-puddles-review.md`.
 
-The production build uses HDR rendering, ACES tone mapping, MSAA, SMAA, contact AO on High, and restrained bloom. High uses a 1.15 maximum pixel ratio; Balanced uses 1.0. Irregular puddles reflect the scene on High and Balanced; Low retains the wet surface without the reflection pass. Recessed animated smoke fills the boss’s hood aperture and responds to combat. Weapon and boot sounds are spatially placed with a quiet room response. Elden Ring and Dark Souls III are documented art references; this is an original browser encounter with its own assets, not a claim of AAA visual parity. No public deployment has been made.
+The production build uses HDR rendering, ACES tone mapping, MSAA, SMAA, contact AO on High, and restrained bloom. High uses a 1.15 maximum pixel ratio; Balanced uses 1.0. Irregular puddles reflect the scene on High and Balanced; Low retains the wet surface without the reflection pass. Recessed animated smoke fills the boss’s hood aperture and responds to combat. Weapon and boot sounds are spatially placed with a quiet room response. Elden Ring and Dark Souls III are documented art references; this is an original browser encounter with its own assets, not a claim of AAA visual parity. The game is published on Genex (https://genex.games/lost-cathedral); updates go to the draft page first (`npx genex preview`) and public on `npx genex promote`.

@@ -2,6 +2,7 @@ import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {createPlayerCloth,updatePlayerCloth,bindCloth} from './player-cloth.js';
 import {createBossCloth} from './boss-cloth.js';
+import {capObjectTextures} from './texture-budget.js';
 import {bossWeaponPose,playerWeaponPose, actionDuration, createActionTimings} from './weapon-motion.js';
 import {clipPlayback} from './weapon-motion.js';
 import {ActorAnimation} from './animation-controller.js';
@@ -41,8 +42,13 @@ export function weaponSegmentFor(isBoss,paths={}){
   : [[0,.28,0],[0,1.27,0]]);
 }
 function prepare(root,height,yaw=0){const wrapper=new T.Group();wrapper.add(root);root.rotation.y=yaw;wrapper.updateMatrixWorld(true);const box=new T.Box3().setFromObject(root),size=box.getSize(new T.Vector3());const scale=height/size.y;root.scale.multiplyScalar(scale);root.updateMatrixWorld(true);box.setFromObject(root);const center=box.getCenter(new T.Vector3());root.position.sub(new T.Vector3(center.x,box.min.y,center.z));root.traverse(n=>{if(n.isMesh){n.castShadow=true;n.receiveShadow=true;n.frustumCulled=false;if(n.material){n.material.envMapIntensity=.75;}}});wrapper.updateMatrixWorld(true);return wrapper;}
-export async function loadActors(scene,paths){
- const results=await Promise.all([paths.playerRig||paths.playerBody,paths.bossRig||paths.bossBody,paths.playerSword,paths.playerShield,paths.scythe].map(p=>loader.loadAsync(p)));
+export async function loadActors(scene,paths,{textureCap=0,serial=false}={}){
+ const files=[paths.playerRig||paths.playerBody,paths.bossRig||paths.bossBody,paths.playerSword,paths.playerShield,paths.scythe];
+ // Touch (17 Sep 2026): one file at a time on a phone, so the decodes never stack; the desktop keeps loading all five at once.
+ const results=serial?await files.reduce(async(done,p)=>{const list=await done;list.push(await loader.loadAsync(p));return list;},Promise.resolve([])):await Promise.all(files.map(p=>loader.loadAsync(p)));
+ // Touch (17 Sep 2026): the five GLBs carry fifteen 4096-square maps; on a phone they are shrunk to textureCap before
+ // their first upload (texture-budget.js). The desktop passes 0 and keeps them whole.
+ if(textureCap)await Promise.all(results.map(gltf=>capObjectTextures(gltf.scene,textureCap)));
  const player=createActor(results[0],1.85,false,!!paths.playerRig,paths.motion?.player),boss=createActor(results[1],2.5,true,!!paths.bossRig,paths.motion?.boss);scene.add(player.root,boss.root);
  // Props are independent rigid assets with explicit shaft/grip transforms.
  function prop(g,height,yaw=-Math.PI/2){return prepare(g.scene,height,yaw);}

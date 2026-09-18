@@ -225,3 +225,52 @@ dialog input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:7px
  dialog label{margin-bottom:7px}
  .dialog-foot{margin-top:10px;padding-top:8px}
 }
+
+/* ─── touch (17 Sep 2026: phones and tablets) ──────────────────────────────
+   body.touch is set by main.js when device.js takes the touch path; the markup is #touch in index.html. On the desktop
+   none of this applies: body has no .touch class and #touch stays [hidden]. Same iron as the rest of the interface:
+   dark discs, bone ink, a hard shadow, no glow. */
+body.touch{touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body.touch canvas{height:100dvh;touch-action:none}
+body:not(.touch) .touch-only{display:none!important}
+body.touch .key-only,body.touch .control-hint,body.touch .use-key,body.touch .equipment,body.touch .location{display:none!important}
+body.touch .vitals{left:calc(var(--m) + env(safe-area-inset-left,0px));top:calc(var(--m)*.85 + env(safe-area-inset-top,0px))}
+/* the boss bar clears the button cluster: bottom centre in landscape (the cluster sits right of it), under the
+   player's bars in portrait (the cluster would sit on it) */
+body.touch .boss-vitals{bottom:calc(var(--m)*1.1 + env(safe-area-inset-bottom,0px))}
+@media(orientation:portrait){
+ body.touch .boss-vitals{bottom:auto;top:calc(var(--m)*.8 + env(safe-area-inset-top,0px) + 44px + var(--m)*.7);width:calc(100% - var(--m)*2.4)}/* under the 44 px Lock/Pause row, across the screen */
+ body.touch .boss-bar{width:100%}/* the bar fills its centred box (it kept the landscape width and sat at the left) */
+}
+body:has(#settings[open]) #touch{opacity:.16}
+#touch{position:fixed;inset:0;z-index:3;pointer-events:none;touch-action:none;font-family:var(--hud-sc);font-variant:var(--hud-scv);color:var(--cap);transition:opacity .3s}
+.t-zone{position:absolute;top:0;bottom:0;width:50%;pointer-events:auto;touch-action:none}
+.t-move{left:0}.t-look{right:0}
+.t-stick{position:absolute;display:none;width:112px;height:112px;margin:-56px 0 0 -56px;border-radius:50%;border:1px solid #3a3630a0;background:#0b090870;
+ box-shadow:inset 0 0 0 1px #000a,0 2px 8px #000a;pointer-events:none}
+.t-stick.live{display:block}
+.t-stick i{position:absolute;left:50%;top:50%;width:44px;height:44px;border-radius:50%;background:#2e2a25;border:1px solid #57504a;
+ box-shadow:inset 0 0 8px #0009,inset 0 1px 0 #ffffff12,0 2px 5px #000d;transform:translate(-50%,-50%)}
+.t-cluster,.t-top{position:absolute;pointer-events:none}
+/* On Genex the game is a full-viewport iframe and an iframe cannot read env(safe-area-inset-*): the extra 24 px keeps
+   the cluster off the home indicator and, in landscape, the right-hand row off a notch. */
+.t-cluster{right:calc(var(--m)*.8 + env(safe-area-inset-right,0px));bottom:calc(var(--m)*.8 + 24px + env(safe-area-inset-bottom,0px));width:186px;height:186px}
+.t-btn{pointer-events:auto;touch-action:none;position:absolute;display:grid;place-items:center;border-radius:50%;padding:0;color:var(--cap);background:#0b0908d0;border:1px solid #3a3630;
+ box-shadow:inset 0 0 0 1px #000a,inset 0 0 12px #0009,0 2px 6px #000d;font-size:11px;letter-spacing:.14em;text-indent:.14em;line-height:1;text-shadow:1px 1px 0 #050403,0 0 5px #000;
+ -webkit-tap-highlight-color:transparent;transition:background .08s,color .08s}
+.t-btn.down{background:#231d18;color:var(--bone-hi);border-color:#57504a;box-shadow:inset 0 0 0 1px #000a,inset 0 2px 4px #000c}
+.t-attack{width:82px;height:82px;right:0;bottom:0;font-size:13px}
+.t-roll{width:58px;height:58px;right:96px;bottom:6px}
+.t-guard{width:58px;height:58px;right:12px;bottom:98px}
+.t-flask{width:60px;height:60px;right:102px;bottom:78px;display:block}
+.t-flask i{position:absolute;left:50%;top:7px;width:28px;height:40px;transform:translateX(-50%);background:url(../../assets/ui/flask.png) center/contain no-repeat;
+ filter:saturate(.3) brightness(.62) contrast(1.15) drop-shadow(0 2px 3px #000)}
+.t-flask b{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:'Vesper Figures',var(--hud-serif);font-weight:400;font-size:17px;line-height:1;letter-spacing:0;text-indent:0;color:var(--bone-hi);text-shadow:1px 1px 0 #050403,0 0 6px #000,0 0 10px #000}
+#touch.empty .t-flask i{filter:saturate(0) brightness(.35) contrast(1.1) drop-shadow(0 2px 3px #000)}
+#touch.empty .t-flask b{color:var(--hint)}
+.t-top{right:calc(var(--m)*.8 + env(safe-area-inset-right,0px));top:calc(var(--m)*.8 + env(safe-area-inset-top,0px));display:flex;gap:10px}
+@media(orientation:landscape){body.touch .t-cluster,body.touch .t-top{right:calc(var(--m)*.8 + 28px + env(safe-area-inset-right,0px))}}
+.t-small{position:static;width:44px;height:44px;font-size:10px}
+.t-lock.on{color:var(--bone);border-color:#57504a}
+/* the version mark in the pause band's foot (main.js writes it from package.json) */
+.version{font-family:var(--hud-serif);font-variant:normal;letter-spacing:.08em;font-size:.78em;color:var(--hint)}

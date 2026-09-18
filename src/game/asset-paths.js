@@ -79,6 +79,21 @@ export const ASSETS={
  block:chosenSounds('block',[new URL('../../assets/one-powerful-heavy-steel-scythe-impact-a-cmu1fwan.mp3',import.meta.url).href]),
 };
 
+// Phone copies (17 Sep 2026, the mobile pass): the same models with their 4096-square maps resized to 1024 by
+// scripts/make-mobile-assets.py (mesh, rig, clips and materials byte-for-byte the same), and the seal at 1024.
+// main.js swaps these in on the touch path only; the desktop never reads this table.
+export const MOBILE_ASSETS={
+ playerRig:new URL('../../assets/mobile/player-video-candidate-v18.glb',import.meta.url).href,
+ bossRig:new URL('../../assets/mobile/boss-supported-combat.glb',import.meta.url).href,
+ scythe:new URL('../../assets/mobile/scythe-fitted.glb',import.meta.url).href,
+ playerSword:new URL('../../assets/mobile/player-sword.glb',import.meta.url).href,
+ playerShield:new URL('../../assets/mobile/player-shield.glb',import.meta.url).href,
+ monument:new URL('../../assets/mobile/funerary-monument.glb',import.meta.url).href,
+ monumentLod:new URL('../../assets/mobile/funerary-monument-lod.glb',import.meta.url).href,
+ floorSeal:new URL('../../assets/mobile/floor-seal.png',import.meta.url).href,
+ floorSealNR:new URL('../../assets/mobile/floor-seal-nr.png',import.meta.url).href,
+};
+
 // Music track choices (pause menu, Music track). 'cathedral' is ASSETS.music, the default.
 // The two darker alternatives were generated on 16 Sep 2026 evening (docs/asset-plan.md).
 export const MUSIC_TRACKS={
