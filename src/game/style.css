@@ -274,3 +274,5 @@ body:has(#settings[open]) #touch{opacity:.16}
 .t-lock.on{color:var(--bone);border-color:#57504a}
 /* the version mark in the pause band's foot (main.js writes it from package.json) */
 .version{font-family:var(--hud-serif);font-variant:normal;letter-spacing:.08em;font-size:.78em;color:var(--hint)}
+.version a{color:var(--hint);text-decoration:none;text-shadow:none;transition:color .2s}
+.version a:hover{color:var(--cap)}

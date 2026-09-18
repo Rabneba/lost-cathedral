@@ -95,7 +95,7 @@ test('the version is set and shown',()=>{
  assert.match(pkg.version,/^\d+\.\d+\.\d+$/);
  const [major,minor]=pkg.version.split('.').map(Number);assert.ok(major>1||(major===1&&minor>=1),'1.1.0 or later (1.0 was the 17 Sep release)');
  assert.ok(read('src/game/main.js').includes("$('version').textContent='v'+pkg.version"),'the pause band shows it');
- assert.ok(read('index.html').includes('<small id="version" class="version"></small>'));
+ assert.ok(read('index.html').includes('<span id="version"></span>')&&read('index.html').includes('href="https://github.com/Rabneba/lost-cathedral"'),'the pause band foot carries the version and the source link');
 });
 
 // The phone copies of the heavy models (scripts/make-mobile-assets.py): same container, textures no larger than 1024.
