@@ -44,6 +44,8 @@ assets/production/*
 assets/rigs/*
 !assets/ui/
 assets/ui/*
+# Phone copies of the heavy models (17 Sep 2026, scripts/make-mobile-assets.py): all of them ship.
+!assets/mobile/
 !docs/combat-revision/
 docs/combat-revision/*
 !docs/player-combat-revision/
@@ -190,3 +192,6 @@ assets/combat-revision/boss/v62-paced-aimed-slam/*
 !docs/player-motion-revision-3/player-video-candidate-v18-manifest.json
 !docs/round-2-2026-09-16/sounds-chosen.json
 !.genex/scratch/
+
+# Python bytecode caches (one was tracked by accident)
+__pycache__/
